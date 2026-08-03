@@ -1,0 +1,45 @@
+1:"$Sreact.fragment"
+3:I[7558,["282","static/chunks/282-59304b4e81714c35.js","944","static/chunks/944-dab328eb18ff829d.js","177","static/chunks/app/layout-63d2a99e7f674dd9.js"],"ThemeProvider"]
+4:I[9994,["282","static/chunks/282-59304b4e81714c35.js","944","static/chunks/944-dab328eb18ff829d.js","177","static/chunks/app/layout-63d2a99e7f674dd9.js"],"default"]
+5:I[9766,[],""]
+6:I[8924,[],""]
+7:I[7923,["282","static/chunks/282-59304b4e81714c35.js","944","static/chunks/944-dab328eb18ff829d.js","177","static/chunks/app/layout-63d2a99e7f674dd9.js"],"default"]
+9:I[4431,[],"OutletBoundary"]
+b:I[5278,[],"AsyncMetadataOutlet"]
+d:I[4431,[],"ViewportBoundary"]
+f:I[4431,[],"MetadataBoundary"]
+11:I[7150,[],""]
+:HL["/_next/static/css/3d48bbdbe2af49a8.css","style"]
+2:T492,
+              try {
+                const theme = localStorage.getItem('theme-storage');
+                const parsed = theme ? JSON.parse(theme) : null;
+                const setting = parsed?.state?.theme || 'system';
+                const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const effective = setting === 'dopamine'
+                  ? 'dopamine'
+                  : (setting === 'dark'
+                    ? 'dark'
+                    : (setting === 'light'
+                      ? 'light'
+                      : (prefersDark ? 'dark' : 'light')));
+                var root = document.documentElement;
+                root.classList.remove('light', 'dark', 'dopamine');
+                root.classList.add(effective);
+                root.setAttribute('data-theme', effective);
+              } catch (e) {
+                var root = document.documentElement;
+                root.classList.remove('light', 'dark', 'dopamine');
+                root.classList.add('light');
+                root.setAttribute('data-theme', 'light');
+              }
+            0:{"P":null,"b":"7FuUyDI-HYq4VDhra5vLE","p":"","c":["","projects",""],"i":false,"f":[[["",{"children":[["slug","projects","d"],{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/3d48bbdbe2af49a8.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"icon","href":"/favicon.svg","type":"image/svg+xml"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"font-sans antialiased","children":["$","$L3",null,{"children":[["$","$L4",null,{"items":[{"title":"About","type":"page","target":"about","href":"/"},{"title":"Publications","type":"page","target":"publications","href":"/publications"},{"title":"Teaching","type":"page","target":"teaching","href":"/teaching"},{"title":"Projects","type":"page","target":"projects","href":"/projects"},{"title":"Blog","type":"page","target":"blog","href":"/blog"}],"siteTitle":"OLIVIA's HOME","enableOnePageMode":false}],["$","main",null,{"className":"min-h-screen pt-16 lg:pt-20","children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","$L7",null,{"lastUpdated":"Jan 9, 2026"}]]}]}]]}]]}],{"children":[["slug","projects","d"],["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L8",null,["$","$L9",null,{"children":["$La",["$","$Lb",null,{"promise":"$@c"}]]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Ld",null,{"children":"$Le"}],null],["$","$Lf",null,{"children":["$","div",null,{"hidden":true,"children":"$L10"}]}]]}],false]],"m":"$undefined","G":["$11",[]],"s":false,"S":true}
+12:"$Sreact.suspense"
+10:["$","$12",null,{"fallback":null,"children":"$L13"}]
+14:I[4121,["282","static/chunks/282-59304b4e81714c35.js","41","static/chunks/41-94149ff3d5b3ff47.js","727","static/chunks/727-67083baf424d9ee3.js","681","static/chunks/681-04b1f72a4abd9bc4.js","182","static/chunks/app/%5Bslug%5D/page-2f885d0fe4c57fa8.js"],"default"]
+8:["$","div",null,{"className":"max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12","children":[false,false,["$","$L14",null,{"config":{"type":"card","title":"Projects","description":"Research, collaborations, and selected work.","items":[{"title":"Projects Coming Soon","subtitle":"This section is currently being prepared.","content":"Project details will be added here."}]}}]]}]
+e:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+a:null
+15:I[622,[],"IconMark"]
+c:{"metadata":[["$","title","0",{"children":"Projects | OLIVIA's HOME"}],["$","meta","1",{"name":"description","content":"Research, collaborations, and selected work."}],["$","meta","2",{"name":"author","content":"Olivia Yan Huang"}],["$","meta","3",{"name":"keywords","content":"Olivia Yan Huang,PhD,Research,University of Illinois Urbana Champaign"}],["$","meta","4",{"name":"creator","content":"Olivia Yan Huang"}],["$","meta","5",{"name":"publisher","content":"Olivia Yan Huang"}],["$","meta","6",{"property":"og:title","content":"OLIVIA's HOME"}],["$","meta","7",{"property":"og:description","content":"PhD student at the University of Illinois Urbana Champaign."}],["$","meta","8",{"property":"og:site_name","content":"Olivia Yan Huang's Academic Website"}],["$","meta","9",{"property":"og:locale","content":"en_US"}],["$","meta","10",{"property":"og:type","content":"website"}],["$","meta","11",{"name":"twitter:card","content":"summary"}],["$","meta","12",{"name":"twitter:title","content":"OLIVIA's HOME"}],["$","meta","13",{"name":"twitter:description","content":"PhD student at the University of Illinois Urbana Champaign."}],["$","link","14",{"rel":"icon","href":"/favicon.svg"}],["$","$L15","15",{}]],"error":null,"digest":"$undefined"}
+13:"$c:metadata"

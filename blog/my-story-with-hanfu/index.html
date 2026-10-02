@@ -2,8 +2,8 @@
               try {
                 const theme = localStorage.getItem('theme-storage');
                 const parsed = theme ? JSON.parse(theme) : null;
-                const setting = parsed?.state?.theme && parsed.state.theme !== 'system' ? parsed.state.theme : 'dark';
-                if (!parsed?.state?.theme || parsed.state.theme === 'system') localStorage.setItem('theme-storage', JSON.stringify({state:{theme:'dark'},version:0}));
+                const setting = parsed?.state?.theme && parsed.state.theme !== 'system' ? parsed.state.theme : 'light';
+
                 const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const effective = setting === 'dopamine'
                   ? 'dopamine'

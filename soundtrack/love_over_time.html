@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.documentElement.classList.add('js', 'journey-locked');</script>
+  <meta name="description" content="Love Over Time: a soundtrack of romantic relationships across the life course.">
+  <title>Love Over Time — A Relationship Soundtrack</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #66717d;
+      --paper: #f6f2eb;
+      --paper-2: #fbfaf7;
+      --line: rgba(23, 32, 42, .15);
+      --warm: #c66e4e;
+      --gold: #d99d5d;
+      --night: #263248;
+      --sage: #718b79;
+      /* A restrained editorial pairing keeps the report cohesive. */
+      --serif: "Iowan Old Style", Baskerville, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html.opening-active, html.opening-active body { overflow: hidden; }
+    html.journey-locked, html.journey-locked body { overflow: hidden; }
+    html.journey-locked main > :not(.hero) { display: none; }
+    html.journey-locked .topbar nav,
+    html.journey-locked .sound-dock,
+    html.journey-locked .progress { visibility: hidden; opacity: 0; pointer-events: none; }
+    html.journey-locked .footer { display: none; }
+    html.journey-open main > :not(.hero) { animation: journeyOpen .8s ease both; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); font-size: 16px; line-height: 1.55; letter-spacing: .006em; }
+    a { color: inherit; }
+    .opening-sequence { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 76% 38%, rgba(217,157,93,.2), transparent 26%), linear-gradient(135deg, #faf6ee 0%, #eee1d4 100%); color: var(--ink); transition: opacity .85s ease, transform .85s cubic-bezier(.2,.75,.25,1); }
+    .opening-sequence[hidden] { display: none; }
+    .opening-sequence.is-closing { opacity: 0; transform: scale(1.035); pointer-events: none; }
+    .opening-sequence::before { content: ""; position: absolute; width: 72vw; height: 72vw; max-width: 920px; max-height: 920px; right: -12vw; top: -20vw; border: 1px solid rgba(23,32,42,.13); border-radius: 50%; transition: border-color .7s ease, transform .9s ease; }
+    .opening-sequence::after { content: ""; position: absolute; left: 7vw; bottom: 10vh; width: 34vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(198,110,78,.58), transparent); transform: rotate(-8deg); }
+    .opening-sequence[data-stage="2"] { background: radial-gradient(circle at 72% 36%, rgba(38,50,72,.24), transparent 28%), linear-gradient(135deg, #e8e3dc 0%, #c9ced5 100%); }
+    .opening-sequence[data-stage="3"] { background: radial-gradient(circle at 76% 38%, rgba(113,139,121,.2), transparent 28%), linear-gradient(135deg, #f4f0e8 0%, #dce7df 100%); }
+    .opening-sequence[data-stage="4"] { background: radial-gradient(circle at 73% 38%, rgba(198,110,78,.2), transparent 28%), linear-gradient(135deg, #faf2e5 0%, #ecd3bd 100%); }
+    .opening-sequence[data-stage="5"] { background: radial-gradient(circle at 74% 38%, rgba(154,128,96,.22), transparent 28%), linear-gradient(135deg, #f3eee4 0%, #d9d2c2 100%); }
+    .opening-shell { position: relative; z-index: 1; width: min(1160px, 86vw); min-height: min(720px, 88vh); display: grid; grid-template-columns: minmax(280px, .78fr) minmax(420px, 1.22fr); gap: clamp(28px, 6vw, 92px); align-items: center; }
+    .opening-copy { position: relative; z-index: 4; max-width: 440px; }
+    .opening-kicker { margin: 0 0 22px; color: var(--muted); font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .opening-number { display: block; color: var(--warm); font-size: .76rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    .opening-title { margin-top: 15px; font-size: clamp(3.8rem, 7vw, 7rem); letter-spacing: -.065em; }
+    .opening-description { max-width: 390px; margin: 28px 0 0; font-family: var(--serif); font-size: clamp(1.08rem, 1.65vw, 1.35rem); line-height: 1.5; color: #46515b; }
+    .opening-cue { display: flex; align-items: center; gap: 12px; margin-top: 42px; color: var(--muted); font-size: .65rem; letter-spacing: .14em; text-transform: uppercase; }
+    .opening-cue::before { content: ""; width: 34px; height: 1px; background: var(--warm); }
+    .opening-visual { position: relative; min-height: min(600px, 74vh); display: grid; place-items: center; perspective: 1200px; }
+    .opening-visual::before { content: ""; position: absolute; width: min(540px, 72%); aspect-ratio: 1; border: 1px solid rgba(23,32,42,.12); border-radius: 50%; transform: translate(6%, 2%); transition: transform .9s ease, border-color .7s ease; }
+    .opening-visual::after { content: ""; position: absolute; width: min(410px, 58%); aspect-ratio: 1; border: 1px dashed rgba(198,110,78,.42); border-radius: 50%; transform: translate(11%, 8%) rotate(-18deg); transition: transform .9s ease, border-color .7s ease; }
+    .opening-figure { position: relative; z-index: 2; width: min(96%, 700px); aspect-ratio: 16 / 9; overflow: visible; border: 1px solid rgba(23,32,42,.14); border-radius: 24px; background: var(--paper-2); box-shadow: 0 24px 42px rgba(23,32,42,.16); filter: drop-shadow(0 24px 25px rgba(23,32,42,.12)); transform-style: preserve-3d; transform: translate3d(3%, 0, 0) rotate(-2deg) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); transition: transform .9s cubic-bezier(.2,.75,.25,1), filter .9s ease; will-change: transform; }
+    .opening-figure::before { content: ""; position: absolute; z-index: 0; inset: 10px -14px -16px 10px; border: 1px solid rgba(23,32,42,.12); border-radius: 25px; background: linear-gradient(145deg, rgba(255,255,255,.58), rgba(198,110,78,.12)); box-shadow: 0 18px 25px rgba(23,32,42,.11); transform: translateZ(-18px) rotate(2deg); }
+    .opening-figure::after { content: ""; position: absolute; z-index: 3; inset: 0; border-radius: 24px; pointer-events: none; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.28) 47%, transparent 72%); opacity: .54; mix-blend-mode: screen; transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 18px); transition: transform .25s ease-out; }
+    .opening-figure img { position: relative; z-index: 1; display: block; width: 100%; height: 100%; border-radius: 24px; object-fit: cover; transition: opacity .42s ease, transform .72s cubic-bezier(.2,.75,.25,1); }
+    .opening-figure img.is-changing { opacity: 0; transform: scale(1.035); }
+    .opening-sequence[data-stage="1"] .opening-figure { transform: translate3d(4%, -1%, 0) rotate(-4deg) scale(1.04) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); filter: saturate(1.15) drop-shadow(0 26px 28px rgba(198,110,78,.19)); }
+    .opening-sequence[data-stage="2"] .opening-figure { transform: translate3d(0, 2%, 0) rotate(2deg) scale(.98) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); filter: saturate(.8) contrast(1.08) drop-shadow(0 24px 25px rgba(38,50,72,.22)); }
+    .opening-sequence[data-stage="3"] .opening-figure { transform: translate3d(5%, -2%, 0) rotate(-2deg) scale(1.02) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); filter: saturate(.86) brightness(1.04) drop-shadow(0 24px 25px rgba(113,139,121,.2)); }
+    .opening-sequence[data-stage="4"] .opening-copy { max-width: 500px; }
+    .opening-sequence[data-stage="4"] .opening-title { font-size: clamp(3.35rem, 6.35vw, 6.35rem); }
+    .opening-sequence[data-stage="4"] .opening-figure { transform: translate3d(10%, 0, 0) rotate(3deg) scale(.92) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); filter: saturate(1.12) drop-shadow(0 24px 25px rgba(198,110,78,.2)); }
+    .opening-sequence[data-stage="5"] .opening-figure { transform: translate3d(4%, 2%, 0) rotate(-1deg) scale(.97) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); filter: saturate(.72) sepia(.22) drop-shadow(0 20px 23px rgba(80,70,56,.2)); }
+    .opening-symbol { position: absolute; z-index: 3; right: 12%; top: 18%; display: grid; place-items: center; width: 64px; height: 64px; border: 1px solid rgba(198,110,78,.45); border-radius: 50%; background: rgba(255,255,255,.34); color: var(--warm); font-family: var(--serif); font-size: 2rem; box-shadow: 0 12px 22px rgba(23,32,42,.09); transition: transform .7s ease, color .7s ease, border-color .7s ease; }
+    .opening-symbol::before { content: "✦"; }
+    .opening-sequence[data-stage="1"] .opening-symbol::before { content: "♥"; }
+    .opening-sequence[data-stage="2"] .opening-symbol::before { content: "//"; font-family: var(--sans); font-size: 1.25rem; }
+    .opening-sequence[data-stage="3"] .opening-symbol::before { content: "✧"; }
+    .opening-sequence[data-stage="4"] .opening-symbol::before { content: "○"; }
+    .opening-sequence[data-stage="5"] .opening-symbol::before { content: "∞"; }
+    .opening-sequence[data-stage="2"] .opening-symbol { color: var(--night); border-color: rgba(38,50,72,.48); transform: rotate(-9deg); }
+    .opening-sequence[data-stage="5"] .opening-symbol { color: #89785d; border-color: rgba(137,120,93,.5); }
+    .opening-timeline { position: absolute; z-index: 4; left: 7vw; right: 7vw; bottom: 34px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    .opening-timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; background: rgba(23,32,42,.17); }
+    .opening-timeline span { position: relative; padding-top: 20px; color: rgba(102,113,125,.7); cursor: pointer; font-size: .58rem; letter-spacing: .11em; text-align: center; text-transform: uppercase; transition: color .35s ease, transform .25s ease; }
+    .opening-timeline span:hover { transform: translateY(-2px); }
+    .opening-timeline span:focus-visible { outline: 2px solid var(--warm); outline-offset: 5px; border-radius: 4px; }
+    .opening-timeline span::before { content: ""; position: absolute; z-index: 1; top: 0; left: 50%; width: 10px; height: 10px; border: 1px solid var(--muted); border-radius: 50%; background: var(--paper); transform: translateX(-50%); transition: background .35s ease, border-color .35s ease, transform .35s ease; }
+    .opening-timeline span.is-past, .opening-timeline span.is-current { color: var(--ink); }
+    .opening-timeline span.is-past::before, .opening-timeline span.is-current::before { border-color: var(--warm); background: var(--warm); }
+    .opening-timeline span.is-current::before { transform: translateX(-50%) scale(1.35); box-shadow: 0 0 0 6px rgba(198,110,78,.12); }
+    .opening-actions { position: absolute; z-index: 5; top: 30px; right: 7vw; display: flex; align-items: center; gap: 14px; }
+    .opening-skip, .opening-continue { appearance: none; border: 1px solid var(--line); border-radius: 99px; background: rgba(255,255,255,.3); color: var(--muted); cursor: pointer; font: inherit; font-size: .62rem; letter-spacing: .11em; padding: 8px 12px; text-transform: uppercase; transition: color .25s ease, border-color .25s ease, background .25s ease, transform .25s ease; }
+    .opening-skip:hover, .opening-continue:hover { color: var(--ink); border-color: var(--ink); background: rgba(255,255,255,.7); transform: translateY(-2px); }
+    .opening-continue { display: none; color: var(--ink); border-color: var(--ink); }
+    .opening-sequence[data-stage="5"] .opening-continue { display: inline-flex; }
+    .opening-skip:focus-visible, .opening-continue:focus-visible { outline: 2px solid var(--warm); outline-offset: 4px; }
+    .progress { position: fixed; inset: 0 0 auto; z-index: 10; height: 4px; background: transparent; }
+    .progress span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--warm), var(--gold), var(--sage)); }
+    .topbar { position: fixed; z-index: 9; inset: 4px 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 5vw; background: rgba(246,242,235,.84); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+    .brand { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
+    .topbar nav { display: flex; gap: 18px; font-size: .7rem; letter-spacing: .11em; text-transform: uppercase; }
+    .topbar nav a { text-decoration: none; color: var(--muted); }
+    .topbar nav a:hover { color: var(--ink); }
+    .sound-dock { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .sound-toggle { appearance: none; display: inline-flex; align-items: center; gap: 9px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 99px; background: rgba(255,255,255,.35); color: var(--ink); cursor: pointer; font: inherit; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+    .sound-toggle:hover { transform: translateY(-2px); border-color: var(--ink); background: rgba(255,255,255,.7); }
+    .sound-toggle:focus-visible { outline: 2px solid var(--warm); outline-offset: 4px; }
+    .sound-mark { display: inline-flex; align-items: end; gap: 2px; width: 14px; height: 14px; }
+    .sound-bar { width: 2px; height: 5px; border-radius: 2px; background: var(--warm); transform-origin: bottom; }
+    .sound-bar:nth-child(2) { height: 10px; }
+    .sound-bar:nth-child(3) { height: 7px; }
+    .sound-dock.is-playing .sound-bar { animation: soundPulse .8s ease-in-out infinite alternate; }
+    .sound-dock.is-playing .sound-bar:nth-child(2) { animation-delay: -.3s; }
+    .sound-dock.is-playing .sound-bar:nth-child(3) { animation-delay: -.55s; }
+    .sound-chapter { color: var(--muted); font-size: .6rem; letter-spacing: .075em; text-transform: uppercase; white-space: nowrap; }
+    .hero { min-height: 100vh; display: grid; place-items: center; padding: 120px 7vw 80px; position: relative; overflow: hidden; background: radial-gradient(circle at 15% 20%, rgba(217,157,93,.4), transparent 34%), radial-gradient(circle at 88% 26%, rgba(198,110,78,.32), transparent 30%), linear-gradient(135deg, #faf6ee 0%, #eee1d4 100%); }
+    .hero::before { content: ""; position: absolute; width: 58vw; height: 58vw; max-width: 760px; max-height: 760px; border: 1px solid rgba(23,32,42,.14); border-radius: 50%; transform: translate(18%, 8%); }
+    .hero-inner { width: min(1100px, 100%); padding-right: 14%; position: relative; z-index: 2; }
+    .hero-figure { position: absolute; z-index: 1; right: 4vw; bottom: 5vh; width: min(43vw, 570px); pointer-events: none; transform: translate3d(var(--figure-x, 0), var(--figure-y, 0), 0) rotate(-2deg); transition: transform .2s ease-out; }
+    .hero-figure::before { content: ""; position: absolute; inset: 17% 6% 14% 5%; border: 1px solid rgba(23,32,42,.14); border-radius: 50%; transform: rotate(15deg); }
+    .hero-figure::after { content: ""; position: absolute; left: 4%; right: 2%; bottom: 9%; height: 1px; background: linear-gradient(90deg, transparent, rgba(198,110,78,.55), transparent); transform: rotate(-6deg); }
+    .hero-figure img { position: relative; display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 22px rgba(23,32,42,.18)); animation: figureFloat 6s ease-in-out infinite; }
+    .hero.is-journey-started .hero-figure img { animation: runnerRun 1.05s ease-in-out infinite; }
+    .hero.is-journey-started .hero-figure::after { animation: trailPulse 1.05s ease-in-out infinite; }
+    .eyebrow { margin: 0 0 20px; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: .98; margin: 0; font-feature-settings: "kern" 1; }
+    h1 { font-size: clamp(4.2rem, 10.5vw, 9.2rem); letter-spacing: -.065em; max-width: 900px; }
+    .hero-sub { max-width: 560px; margin: 34px 0 0 8%; font-family: var(--serif); font-size: clamp(1.1rem, 1.8vw, 1.42rem); line-height: 1.45; color: #46515b; }
+    .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; margin: 42px 0 0 8%; }
+    .pill { border: 1px solid var(--line); border-radius: 99px; padding: 7px 13px; font-size: .68rem; letter-spacing: .095em; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.32); }
+    .hero-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin: 30px 0 0 8%; }
+    .primary-cta, .ghost-button { appearance: none; border: 0; cursor: pointer; font: inherit; }
+    .primary-cta { display: inline-flex; align-items: center; gap: 18px; padding: 12px 16px 12px 18px; border: 1px solid var(--ink); border-radius: 99px; background: var(--ink); color: var(--paper); font-size: .7rem; letter-spacing: .105em; text-transform: uppercase; transition: transform .25s ease, background .25s ease, color .25s ease; }
+    .primary-cta span { font-size: 1.05rem; line-height: 1; transition: transform .25s ease; }
+    .primary-cta:hover { transform: translateY(-3px); background: var(--warm); border-color: var(--warm); }
+    .primary-cta:hover span { transform: translateY(3px); }
+    .primary-cta.light { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+    .primary-cta.light:hover { background: var(--gold); border-color: var(--gold); }
+    .hero-note { max-width: 280px; padding-left: 18px; border-left: 1px solid var(--line); color: var(--muted); font-family: var(--serif); font-size: .94rem; letter-spacing: .01em; line-height: 1.45; }
+    .scroll-note { position: absolute; bottom: 30px; left: 7vw; display: flex; align-items: center; gap: 12px; font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .scroll-note::before { content: ""; display: block; width: 34px; height: 1px; background: var(--muted); opacity: .6; }
+    .report-overview { position: relative; overflow: hidden; padding: 105px 7vw 115px; background: #111827; color: #fff; }
+    .report-overview::before, .report-overview::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; pointer-events: none; }
+    .report-overview::before { width: 58vw; height: 58vw; right: -18vw; top: -26vw; }
+    .report-overview::after { width: 26vw; height: 26vw; left: -11vw; bottom: -15vw; }
+    .report-figure { position: absolute; z-index: 0; right: 4vw; bottom: -6%; width: min(28vw, 350px); opacity: .47; transform: rotate(4deg); pointer-events: none; }
+    .report-figure img { display: block; width: 100%; filter: saturate(.8) drop-shadow(0 18px 20px rgba(0,0,0,.24)); animation: figureDrift 8s ease-in-out infinite; }
+    .sound-is-playing .report-figure img { animation: runnerRun 1.05s ease-in-out infinite; }
+    .overview-inner { position: relative; z-index: 1; width: min(1100px, 100%); margin: auto; display: grid; grid-template-columns: .9fr 1.1fr; gap: 8vw; align-items: end; }
+    .overview-copy h2 { margin-top: 16px; font-size: clamp(2.9rem, 5.5vw, 5.5rem); letter-spacing: -.06em; }
+    .overview-copy h2 em { color: var(--gold); font-style: normal; }
+    .overview-copy p { max-width: 510px; margin: 28px 0 0; color: rgba(255,255,255,.72); font-family: var(--serif); font-size: 1.12rem; line-height: 1.5; }
+    .overview-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 32px; }
+    .mode-status { color: rgba(255,255,255,.48); font-size: .68rem; letter-spacing: .095em; text-transform: uppercase; }
+    .report-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .report-stat { min-height: 190px; padding: 22px; border: 1px solid rgba(255,255,255,.17); background: rgba(255,255,255,.05); display: flex; flex-direction: column; justify-content: space-between; transition: background .35s ease, transform .35s ease; }
+    .report-stat:hover { background: rgba(255,255,255,.11); transform: translateY(-7px); }
+    .report-stat strong { font-family: var(--serif); font-size: clamp(4rem, 7vw, 6.5rem); font-weight: 400; line-height: .8; letter-spacing: -.08em; color: var(--gold); }
+    .report-stat strong::after { content: "+"; font-family: var(--sans); font-size: 1.2rem; vertical-align: top; letter-spacing: 0; }
+    .report-stat:last-child strong::after { content: ""; }
+    .report-stat .stat-label { margin-top: 18px; font-size: .7rem; letter-spacing: .13em; text-transform: uppercase; }
+    .report-stat small { color: rgba(255,255,255,.5); font-size: .7rem; line-height: 1.5; }
+    .act-switcher { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: -20px 0 34px; }
+    .act-tab { appearance: none; cursor: pointer; padding: 9px 14px; border: 1px solid var(--line); border-radius: 99px; background: transparent; color: var(--muted); font: inherit; font-size: .68rem; letter-spacing: .105em; text-transform: uppercase; transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease; }
+    .act-tab:hover { transform: translateY(-2px); color: var(--ink); border-color: var(--ink); }
+    .act-tab.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+    .tracklist { padding: 100px 7vw 105px; background: radial-gradient(circle at 88% 16%, rgba(198,110,78,.15), transparent 20%), #eee8dd; }
+    .tracklist-inner { width: min(1100px, 100%); margin: auto; }
+    .tracklist-heading { display: block; margin-bottom: 54px; }
+    .tracklist-heading p { max-width: 920px; margin: 18px 0 0; font-family: var(--serif); font-size: clamp(1.28rem, 2.1vw, 1.82rem); line-height: 1.42; color: #48525b; }
+    .tracklist-caption { margin-top: 16px; font-family: var(--sans) !important; font-size: .68rem !important; line-height: 1.5; letter-spacing: .105em; text-transform: uppercase; color: var(--warm) !important; }
+    .acts { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    .act-card { border-top: 4px solid var(--warm); padding: 24px 22px 26px; background: linear-gradient(145deg, rgba(255,255,255,.78), rgba(255,238,226,.48)); }
+    .act-card.breaking-card { border-color: var(--night); background: linear-gradient(145deg, rgba(255,255,255,.76), rgba(226,232,243,.58)); }
+    .act-card.staying-card { border-color: var(--sage); background: linear-gradient(145deg, rgba(255,255,255,.76), rgba(225,239,226,.58)); }
+    .act-card.understanding-card { border-color: #9a8060; background: linear-gradient(145deg, rgba(255,255,255,.76), rgba(238,226,205,.62)); }
+    .act-card { display: grid; grid-template-columns: minmax(230px, .7fr) minmax(0, 1.3fr); column-gap: 34px; align-items: start; }
+    .act-card > .section-kicker,
+    .act-card > h3,
+    .act-card > .act-description { grid-column: 1; }
+    .act-card > .cover-grid { grid-column: 2; grid-row: 1 / span 3; align-self: start; }
+    .act-card h3 { font-size: clamp(1.9rem, 2.8vw, 3rem); letter-spacing: -.045em; }
+    .act-card { transition: opacity .45s ease, transform .45s ease, filter .45s ease; }
+    .act-card.is-dimmed { opacity: .24; transform: scale(.985); filter: saturate(.45); }
+    .act-card.is-focus { box-shadow: 0 18px 38px rgba(23,32,42,.11); transform: translateY(-4px); }
+    .act-card .act-description { min-height: 54px; margin: 12px 0 20px; color: var(--muted); font-family: var(--serif); font-size: .96rem; line-height: 1.5; }
+    .cover-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 14px; }
+    .cover-link { display: block; min-width: 0; text-decoration: none; }
+    .cover-art { position: relative; aspect-ratio: 1; margin-bottom: 12px; isolation: isolate; }
+    .cover-art::before { content: ""; position: absolute; inset: 5px -1px -5px 5px; z-index: 0; background: rgba(23,32,42,.14); transform: rotate(2deg); }
+    .cover-art img { position: relative; z-index: 2; display: block; width: 100%; height: 100%; object-fit: cover; border: 7px solid #fbfaf7; box-shadow: 0 10px 20px rgba(23,32,42,.16); transition: transform .35s ease, filter .35s ease; }
+    .vinyl-disc { position: absolute; z-index: 1; top: 13%; right: -17%; width: 74%; height: 74%; border-radius: 50%; background: radial-gradient(circle at 50% 50%, #d8a15c 0 7%, #222b38 7.5% 12%, #101722 12.5% 42%, #2d3642 42.5% 43%, #101722 43.5% 58%, #333e4b 58.5% 59%, #101722 60% 100%); box-shadow: 0 9px 15px rgba(23,32,42,.25); transform: translateX(-32%) rotate(-16deg); transition: transform .35s ease; }
+    .cover-glare { position: absolute; z-index: 3; inset: 7px; pointer-events: none; background: linear-gradient(125deg, rgba(255,255,255,.35), transparent 28%, transparent 70%, rgba(255,255,255,.12)); opacity: .7; transition: opacity .35s ease; }
+    .cover-link:hover .cover-art img { transform: translateX(-5px) rotate(-1.5deg) scale(1.03); filter: saturate(1.08); }
+    .cover-link:hover .vinyl-disc { transform: translateX(12%) rotate(10deg); }
+    .cover-link:hover .cover-glare { opacity: 1; }
+    .track-number { color: var(--muted); font-size: .68rem; letter-spacing: .115em; padding-top: 3px; font-variant-numeric: tabular-nums; }
+    .track-name { display: block; margin-top: 5px; font-family: var(--serif); font-size: .98rem; line-height: 1.22; color: var(--ink); }
+    .track-artist { display: block; margin-top: 2px; color: var(--muted); font-size: .74rem; }
+    .track-artist::before { content: "by "; color: rgba(102,113,125,.7); }
+    .track-role { display: block; margin-top: 8px; color: var(--warm); font-size: .6rem; letter-spacing: .095em; line-height: 1.3; text-transform: uppercase; }
+    .tracklist .track-name, .tracklist .track-artist, .tracklist .track-role, .tracklist .tracklist-caption { display: none; }
+    .tracklist .track-number { display: block; margin-top: 5px; }
+    .intro { padding: 120px 7vw 80px; background: var(--paper-2); }
+    .intro-grid { width: min(1100px, 100%); margin: auto; display: grid; grid-template-columns: .8fr 1.2fr; gap: 8vw; align-items: start; }
+    .section-kicker { font-size: .7rem; letter-spacing: .17em; text-transform: uppercase; color: var(--warm); font-weight: 700; }
+    .intro h2 { font-size: clamp(2.35rem, 4.7vw, 4.15rem); margin-top: 16px; }
+    .intro-copy { font-family: var(--serif); font-size: 1.16rem; line-height: 1.52; color: #3e4750; max-width: 650px; }
+    .thesis { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); font-size: .96rem; }
+    .timeline-wrap { padding: 22px 7vw 80px; background: var(--paper-2); }
+    .timeline { width: min(1100px,100%); margin: auto; display: grid; grid-template-columns: repeat(10, minmax(70px, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+    .timeline a { position: relative; padding: 17px 7px 0; text-decoration: none; color: var(--muted); font-size: .64rem; line-height: 1.3; text-transform: uppercase; letter-spacing: .075em; }
+    .timeline a::before { content: ""; position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--paper-2); border: 1px solid var(--ink); top: -5px; left: 8px; }
+    .timeline a:hover { color: var(--ink); }
+    .act { padding: 105px 7vw 48px; color: #fff; position: relative; overflow: hidden; }
+    .act::after { content: attr(data-number); position: absolute; right: 7vw; top: 60px; font-family: var(--serif); font-size: clamp(7rem, 18vw, 16rem); line-height: .8; opacity: .08; }
+    .act-inner { width: min(1100px,100%); margin: auto; position: relative; z-index: 1; }
+    .act h2 { font-size: clamp(3rem, 7.2vw, 6.4rem); letter-spacing: -.055em; }
+    .act p { max-width: 560px; margin: 18px 0 0; color: rgba(255,255,255,.77); font-family: var(--serif); font-size: 1.12rem; line-height: 1.5; }
+    .act.discovering { background: linear-gradient(125deg, #a75e43, #d2985b); }
+    .act.falling-in-love { background: linear-gradient(125deg, #b77a52, #e0b36b); }
+    .act.uncertainty { background: linear-gradient(125deg, #202a3e, #596174); }
+    .act.understanding { background: linear-gradient(125deg, #536e61, #a58a63); }
+    .track { --track-accent: var(--warm); padding: 112px 7vw 118px; background: radial-gradient(circle at 16% 12%, color-mix(in srgb, var(--track-accent) 11%, transparent), transparent 24%), var(--paper); scroll-margin-top: 82px; }
+    .track:nth-of-type(even) { background: #efeae1; }
+    .track-inner { width: min(1080px,100%); margin: auto; display: grid; grid-template-columns: minmax(260px, .84fr) minmax(360px, 1.16fr); gap: clamp(28px, 5vw, 76px); align-items: start; position: relative; z-index: 1; }
+    .track-meta, .course-box { min-width: 0; }
+    .track-meta { grid-column: 1; position: sticky; top: 94px; }
+    .track-visual { position: relative; width: min(100%, 350px); aspect-ratio: 1; margin: 0 0 30px; isolation: isolate; cursor: default; transform: perspective(900px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)); transition: transform .25s ease-out; }
+    .track-visual::after { content: ""; position: absolute; z-index: 4; inset: 10%; pointer-events: none; background: linear-gradient(135deg, rgba(255,255,255,.34), transparent 30%, transparent 72%, rgba(255,255,255,.12)); mix-blend-mode: screen; }
+    .track-vinyl { position: absolute; z-index: 1; inset: 8% -3% 8% 12%; border-radius: 50%; background: radial-gradient(circle at 50% 50%, #d99d5d 0 6%, #273143 6.5% 10%, #101722 10.5% 40%, #3c4652 40.5% 41.5%, #101722 42% 57%, #3c4652 57.5% 58.5%, #101722 59% 100%); box-shadow: 0 16px 24px rgba(23,32,42,.25); animation: vinylSpin 12s linear infinite; }
+    .track-visual.is-paused .track-vinyl { animation-play-state: paused; }
+    .track-visual img { position: relative; z-index: 2; display: block; width: 78%; height: 78%; margin: 11%; object-fit: cover; border: 8px solid #fbfaf7; box-shadow: 0 18px 26px rgba(23,32,42,.2); transform: rotate(-4deg); transition: transform .4s ease, box-shadow .4s ease; }
+    .track:hover .track-visual img { transform: translateX(-7px) rotate(-7deg); }
+    .track { position: relative; overflow: hidden; }
+    .track::before { content: ""; position: absolute; width: 20vw; height: 20vw; right: -10vw; top: 10%; border: 1px solid rgba(23,32,42,.08); border-radius: 50%; transition: transform 1s ease; }
+    .track.is-active::before { transform: scale(1.7); }
+    .track.is-active h3 { animation: titleLift .8s both; }
+    .track.is-active .course-row { animation: rowLift .7s both; }
+    .track.is-active .track-index { color: var(--track-accent); }
+    .track.is-active .course-box { border-color: color-mix(in srgb, var(--track-accent) 45%, transparent); }
+    .track.is-active .course-row:nth-child(2) { animation-delay: .08s; }
+    .track.is-active .course-row:nth-child(3) { animation-delay: .16s; }
+    .track-index { color: var(--warm); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .track h3 { margin-top: 16px; font-size: clamp(2.3rem, 4.8vw, 4.9rem); letter-spacing: -.05em; }
+    .artist { margin-top: 15px; font-size: .94rem; color: var(--muted); }
+    .stage { margin-top: 34px; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .stage strong { display: block; color: var(--ink); margin-top: 5px; letter-spacing: .04em; }
+    .listen-card { width: max-content; max-width: 100%; display: inline-grid; grid-template-columns: 42px minmax(0, auto) auto; align-items: center; gap: 12px; margin-top: 24px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--ink); text-decoration: none; box-shadow: none; transition: transform .28s ease, opacity .28s ease; }
+    .listen-card:hover { background: transparent; border-color: transparent; box-shadow: none; transform: translateY(-3px); opacity: .82; }
+    .listen-card:focus-visible { outline: 2px solid var(--track-accent); outline-offset: 4px; }
+    .listen-disc { position: relative; display: grid; place-items: center; width: 42px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 50% 50%, var(--track-accent) 0 10%, #17202a 11% 17%, #39434d 18% 19%, #111821 20% 48%, #3c4652 49% 51%, #111821 52% 100%); box-shadow: 0 7px 12px rgba(23,32,42,.18); animation: vinylSpin 12s linear infinite; animation-play-state: paused; }
+    .listen-disc::after { content: "▶"; position: absolute; left: 50%; top: 50%; color: rgba(255,255,255,.82); font-size: .62rem; transform: translate(-43%, -50%); }
+    .listen-card:hover .listen-disc { animation-play-state: running; }
+    .listen-copy { min-width: 0; }
+    .listen-copy strong { display: block; font-family: var(--sans); font-size: .68rem; letter-spacing: .12em; line-height: 1.35; text-transform: uppercase; }
+    .listen-copy small { display: block; margin-top: 4px; color: var(--muted); font-family: var(--serif); font-size: .88rem; line-height: 1.3; }
+    .listen-arrow { color: var(--track-accent); font-size: 1.25rem; line-height: 1; transition: transform .28s ease; }
+    .listen-card:hover .listen-arrow { transform: translate(3px, -3px); }
+    .course-box { grid-column: 2; display: grid; gap: 0; padding: 32px 32px 27px; border: 1px solid rgba(23,32,42,.1); border-radius: 24px; background: linear-gradient(155deg, rgba(255,255,255,.88), rgba(255,255,255,.48)); box-shadow: 0 18px 42px rgba(23,32,42,.09); position: relative; overflow: hidden; }
+    .course-box::before { content: "COURSE LENS"; display: block; margin-bottom: 23px; color: var(--track-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; letter-spacing: .16em; }
+    .course-row { display: block; padding: 0 0 21px; margin-bottom: 21px; border-bottom: 1px solid var(--line); }
+    .course-row:last-child { border-bottom: 0; margin-bottom: 0; }
+    .course-label { display: block; margin-bottom: 8px; font-family: var(--sans); font-size: .78rem; letter-spacing: .13em; text-transform: uppercase; color: var(--warm); font-weight: 700; }
+    .course-row p, .track-copy { margin: 0; font-family: var(--serif); font-size: clamp(1.08rem, 1.3vw, 1.23rem); line-height: 1.6; color: #3d4650; }
+    .track-copy { padding: 0 0 21px; margin: 0 0 21px; border-bottom: 1px solid var(--line); color: #303943; }
+    .track-copy::before { content: "Background / Why I chose it"; display: block; margin-bottom: 7px; font-family: var(--sans); font-size: .66rem; font-weight: 700; letter-spacing: .13em; line-height: 1.3; text-transform: uppercase; color: var(--warm); }
+    .course-envelope { display: block; }
+    .envelope-trigger { width: 100%; display: grid; grid-template-columns: 78px minmax(0, 1fr) auto; align-items: center; gap: 17px; padding: 16px 17px; border: 1px solid rgba(23,32,42,.13); border-radius: 16px; background: rgba(255,255,255,.46); color: var(--ink); cursor: pointer; font: inherit; text-align: left; transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease; }
+    .envelope-trigger:hover, .course-box.is-open .envelope-trigger { border-color: color-mix(in srgb, var(--track-accent) 58%, var(--line)); background: rgba(255,255,255,.78); box-shadow: 0 12px 24px rgba(23,32,42,.08); transform: translateY(-2px); }
+    .envelope-trigger:focus-visible { outline: 2px solid var(--track-accent); outline-offset: 4px; }
+    .envelope-icon { position: relative; display: block; width: 72px; aspect-ratio: 1.35; border: 1px solid color-mix(in srgb, var(--track-accent) 65%, var(--line)); border-radius: 8px; background: linear-gradient(145deg, rgba(255,255,255,.94), color-mix(in srgb, var(--track-accent) 16%, var(--paper-2))); box-shadow: 0 10px 16px rgba(23,32,42,.12); transform: rotate(-3deg); transition: transform .35s ease; }
+    .envelope-icon::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(135deg, transparent 48%, color-mix(in srgb, var(--track-accent) 38%, transparent) 49%, transparent 51%), linear-gradient(225deg, transparent 48%, color-mix(in srgb, var(--track-accent) 38%, transparent) 49%, transparent 51%); clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%); }
+    .envelope-icon::after { content: "✦"; position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid color-mix(in srgb, var(--track-accent) 70%, var(--line)); border-radius: 50%; background: var(--paper-2); color: var(--track-accent); font-size: .75rem; transform: translate(-50%, -50%); }
+    .envelope-trigger:hover .envelope-icon, .course-box.is-open .envelope-icon { transform: rotate(0deg) translateY(-2px) scale(1.04); }
+    .envelope-copy { min-width: 0; }
+    .envelope-copy strong { display: block; font-family: var(--sans); font-size: .78rem; letter-spacing: .12em; line-height: 1.35; text-transform: uppercase; }
+    .envelope-copy small { display: block; margin-top: 6px; color: var(--muted); font-family: var(--serif); font-size: .94rem; line-height: 1.4; }
+    .envelope-arrow { color: var(--track-accent); font-size: 1.35rem; line-height: 1; transition: transform .3s ease; }
+    .course-box.is-open .envelope-arrow { transform: rotate(90deg); }
+    .course-letter { margin-top: 16px; padding: 25px 24px 5px; border: 1px solid rgba(23,32,42,.11); border-radius: 18px; background: linear-gradient(160deg, rgba(255,255,255,.74), rgba(255,255,255,.38)); transform-origin: top center; animation: letterReveal .55s cubic-bezier(.2,.75,.25,1) both; }
+    .course-letter .course-row:last-child { padding-bottom: 0; }
+    @keyframes letterReveal { from { opacity: 0; transform: perspective(700px) rotateX(-12deg) translateY(-8px); } to { opacity: 1; transform: perspective(700px) rotateX(0) translateY(0); } }
+    .interlude { padding: 140px 7vw; text-align: center; background: #111827; color: #fff; }
+    .interlude .eyebrow { color: rgba(255,255,255,.55); }
+    .interlude h2 { font-size: clamp(3rem, 8.5vw, 8rem); letter-spacing: -.055em; }
+    .interlude p { max-width: 620px; margin: 30px auto 0; font-family: var(--serif); font-size: 1.16rem; line-height: 1.52; color: rgba(255,255,255,.72); }
+    .finale { padding: 150px 7vw 120px; background: #e8e1d3; }
+    .finale-inner { width: min(900px,100%); margin: auto; }
+    .finale h2 { font-size: clamp(2.85rem, 6.4vw, 6.2rem); letter-spacing: -.055em; }
+    .finale p { max-width: 700px; font-family: var(--serif); font-size: clamp(1.16rem, 2.1vw, 1.55rem); line-height: 1.5; color: #3d4850; }
+    .finale-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+    .ghost-button { padding: 11px 15px; border: 1px solid var(--line); border-radius: 99px; background: transparent; color: var(--muted); font-size: .68rem; letter-spacing: .095em; text-transform: uppercase; transition: color .25s ease, border-color .25s ease, transform .25s ease; }
+    .ghost-button:hover { color: var(--ink); border-color: var(--ink); transform: translateY(-3px); }
+    .js .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.75,.25,1); }
+    .js .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    @keyframes figureFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-13px) rotate(1.4deg); } }
+    @keyframes figureDrift { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(-12px, -10px) rotate(-2deg); } }
+    @keyframes vinylSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes titleLift { from { opacity: .45; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes rowLift { from { opacity: .4; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes runnerRun { 0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); } 25% { transform: translate3d(-7px, -5px, 0) rotate(-1deg); } 50% { transform: translate3d(2px, -1px, 0) rotate(1deg); } 75% { transform: translate3d(-4px, -7px, 0) rotate(-.5deg); } }
+    @keyframes trailPulse { 0%, 100% { opacity: .35; transform: translateX(0) rotate(-6deg); } 50% { opacity: .9; transform: translateX(-16px) rotate(-6deg); } }
+    @keyframes soundPulse { from { transform: scaleY(.55); opacity: .55; } to { transform: scaleY(1.15); opacity: 1; } }
+    @keyframes journeyOpen { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .references { padding: 70px 7vw; background: var(--paper-2); }
+    .references-inner { width: min(900px,100%); margin: auto; }
+    .references h2 { font-size: 2.3rem; margin-bottom: 26px; }
+    .references ul { margin: 0; padding-left: 20px; color: var(--muted); }
+    .audio-credits { padding: 70px 7vw; background: #ebe4d8; border-top: 1px solid var(--line); }
+    .audio-credits h2 { margin: 14px 0 20px; font-size: 2.3rem; }
+    .audio-credits p { max-width: 760px; margin: 12px 0 0; color: #4d5861; font-family: var(--serif); font-size: 1rem; line-height: 1.52; }
+    .audio-credits .music-credit-list { max-width: 820px; margin: 18px 0 0; padding-left: 20px; color: #4d5861; }
+    .audio-credits .music-credit-list li { margin-top: 8px; font-family: var(--sans); font-size: .74rem; line-height: 1.58; }
+    .audio-credits .music-credit-list a { color: var(--ink); text-decoration: underline; text-decoration-color: rgba(198,110,78,.6); text-underline-offset: 3px; }
+    .audio-credits .credit-note { font-family: var(--sans); font-size: .68rem; line-height: 1.58; letter-spacing: .035em; color: var(--muted); }
+    .footer { padding: 24px 7vw 45px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: .68rem; letter-spacing: .095em; text-transform: uppercase; color: var(--muted); background: var(--paper-2); }
+    @media (max-width: 980px) and (min-width: 761px) {
+      .track-inner { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: 38px; }
+      .track-meta { grid-column: 1; position: static; }
+      .course-box { grid-column: 2; }
+    }
+    @media (max-width: 760px) {
+      .topbar nav { display: none; }
+      .sound-chapter { display: none; }
+      .hero-sub, .hero-meta { margin-left: 0; }
+      .hero-actions { margin-left: 0; }
+      .hero-inner { padding-right: 0; }
+      .hero-figure { right: -2vw; bottom: 3vh; width: 62vw; opacity: .52; }
+      .opening-shell { width: 86vw; min-height: 76vh; grid-template-columns: 1fr; gap: 16px; align-content: center; }
+      .opening-copy { max-width: 620px; }
+      .opening-title { font-size: clamp(3.2rem, 13vw, 5.2rem); }
+      .opening-description { margin-top: 16px; }
+      .opening-cue { margin-top: 24px; }
+      .opening-visual { min-height: 37vh; }
+      .opening-figure { width: min(92%, 520px); }
+      .opening-visual::before { width: min(420px, 74%); }
+      .opening-visual::after { width: min(320px, 62%); }
+      .opening-timeline { left: 6vw; right: 6vw; bottom: 24px; }
+      .opening-timeline span { font-size: .48rem; letter-spacing: .06em; }
+      .opening-actions { top: 18px; right: 6vw; }
+      .report-figure { right: -7vw; bottom: -2%; width: 48vw; opacity: .28; }
+      .overview-inner, .intro-grid, .track-inner, .tracklist-heading { grid-template-columns: 1fr; gap: 42px; }
+      .track-meta, .course-box { grid-column: 1; }
+      .track-meta { position: static; }
+      .acts { grid-template-columns: 1fr; }
+      .cover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .act-card { grid-template-columns: 1fr; }
+      .act-card > .cover-grid { grid-column: 1; grid-row: auto; margin-top: 18px; }
+      .act-card .act-description { min-height: 0; }
+      .report-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .report-stat { min-height: 145px; padding: 14px; }
+      .report-stat strong { font-size: 3.6rem; }
+      .timeline { grid-template-columns: repeat(5, 1fr); row-gap: 18px; }
+      .timeline a { padding-bottom: 8px; }
+      .track { padding-top: 75px; padding-bottom: 75px; }
+      .course-box { margin-top: 0; padding: 22px 20px 20px; }
+      .envelope-trigger { grid-template-columns: 60px minmax(0, 1fr) auto; gap: 12px; padding: 14px; }
+      .envelope-icon { width: 58px; }
+      .envelope-copy strong { font-size: .68rem; letter-spacing: .09em; }
+      .envelope-copy small { font-size: .86rem; }
+      .course-letter { padding: 21px 18px 4px; }
+      .act { padding-top: 75px; }
+      .track-visual { width: min(100%, 300px); }
+    }
+    @media (max-width: 460px) {
+      .report-stats { grid-template-columns: 1fr; }
+      .report-stat { min-height: 120px; }
+      .report-stat strong { font-size: 4rem; }
+      .hero-actions, .overview-actions { align-items: flex-start; flex-direction: column; }
+      .hero-figure { width: 78vw; right: -8vw; bottom: 2vh; }
+      .opening-shell { width: 86vw; min-height: 76vh; grid-template-columns: 1fr; gap: 16px; align-content: center; }
+      .opening-copy { max-width: 620px; }
+      .opening-title { font-size: clamp(3.2rem, 13vw, 5.2rem); }
+      .opening-description { margin-top: 16px; }
+      .opening-cue { margin-top: 24px; }
+      .opening-visual { min-height: 37vh; }
+      .opening-figure { width: min(92%, 520px); }
+      .opening-visual::before { width: min(420px, 74%); }
+      .opening-visual::after { width: min(320px, 62%); }
+      .opening-timeline { left: 6vw; right: 6vw; bottom: 24px; }
+      .opening-timeline span { font-size: .48rem; letter-spacing: .06em; }
+      .opening-actions { top: 18px; right: 6vw; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="opening-sequence" id="openingSequence" data-stage="0" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="openingTitle" aria-describedby="openingDescription" hidden>
+    <div class="opening-shell">
+      <div class="opening-copy">
+        <p class="opening-kicker">A visual prologue</p>
+        <span class="opening-number" id="openingNumber">01 · 06</span>
+        <h2 class="opening-title" id="openingTitle">Curiosity</h2>
+        <p class="opening-description" id="openingDescription">She begins by looking outward — following a feeling she cannot yet name.</p>
+        <div class="opening-cue" id="openingCue">A relationship begins with a question.</div>
+      </div>
+      <div class="opening-visual" aria-label="Six illustrated relationship stages">
+        <div class="opening-symbol"></div>
+        <div class="opening-figure"><img id="openingStageImage" src="assets/opening/01-curiosity.png" alt="Curiosity: two people notice each other for the first time on a garden path"></div>
+      </div>
+    </div>
+    <div class="opening-actions">
+      <button class="opening-continue" id="openingContinue" type="button">Continue to the soundtrack</button>
+      <button class="opening-skip" id="openingSkip" type="button">Skip intro</button>
+    </div>
+    <div class="opening-timeline" role="tablist" aria-label="Relationship stages">
+      <span role="tab" tabindex="0" data-stage="0" aria-selected="true" class="is-current">Curiosity</span><span role="tab" tabindex="0" data-stage="1" aria-selected="false">Falling</span><span role="tab" tabindex="0" data-stage="2" aria-selected="false">Conflict</span><span role="tab" tabindex="0" data-stage="3" aria-selected="false">Insights</span><span role="tab" tabindex="0" data-stage="4" aria-selected="false">Commitment</span><span role="tab" tabindex="0" data-stage="5" aria-selected="false">Shared time</span>
+    </div>
+  </section>
+  <div class="progress"><span id="progressBar"></span></div>
+  <header class="topbar">
+    <div class="brand">Love, Over Time</div>
+    <nav aria-label="Main navigation">
+          <a href="#tracklist">Chapters</a>
+          <a href="#chapter-1">Discovering</a>
+      <a href="#chapter-2">Falling</a>
+      <a href="#chapter-3">Growth</a>
+      <a href="#chapter-4">Understanding</a>
+      <a href="#audio-credits">Sound</a>
+      <a href="#references">References</a>
+    </nav>
+    <div class="sound-dock" id="soundDock">
+      <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false" aria-label="Turn sound on">
+        <span class="sound-mark" aria-hidden="true"><span class="sound-bar"></span><span class="sound-bar"></span><span class="sound-bar"></span></span>
+        <span id="soundStatus">Sound off</span>
+      </button>
+      <span class="sound-chapter" id="soundChapter" aria-live="polite">Ambient soundscape</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <p class="eyebrow">A soundtrack of romantic relationships across the life course</p>
+        <h1>Love,<br>Over Time</h1>
+        <p class="hero-sub">What does love mean at different moments of our lives?</p>
+        <div class="hero-meta">
+          <span class="pill">10 tracks</span>
+          <span class="pill">4 chapters</span>
+          <span class="pill">Attraction to companionship</span>
+          <span class="pill">HDFS 225</span>
+        </div>
+        <div class="hero-actions">
+          <button class="primary-cta" type="button" id="startReport">Begin My Journey <span>↓</span></button>
+          <span class="hero-note">Click the button to begin the visual arc.</span>
+        </div>
+      </div>
+      <div class="hero-figure" aria-hidden="true"><img src="assets/runner-love-feminine.png" alt=""></div>
+      <div class="scroll-note">Scroll to follow the relationship.</div>
+    </section>
+
+    <section class="report-overview" id="report-overview">
+      <div class="report-figure" aria-hidden="true"><img src="assets/runner-love-feminine.png" alt=""></div>
+      <div class="overview-inner">
+        <div class="overview-copy">
+          <span class="section-kicker">A relationship listening report</span>
+          <h2>Four chapters.<br><em>One arc.</em></h2>
+          <p>This report reads the ten-song playlist as a life-course journey: discovering love, falling into intimacy, moving through uncertainty, and understanding what makes love endure.</p>
+          <div class="overview-actions">
+            <button class="primary-cta light" type="button" id="continueReport">Enter the tracklist <span>↓</span></button>
+            <span class="mode-status" id="modeStatus" aria-live="polite">Report mode ready</span>
+          </div>
+        </div>
+        <div class="report-stats" aria-label="Soundtrack summary">
+          <div class="report-stat"><strong class="stat-number" data-target="10">0</strong><span class="stat-label">tracks</span><small>from attraction to companionship</small></div>
+          <div class="report-stat"><strong class="stat-number" data-target="4">0</strong><span class="stat-label">chapters</span><small>discovering, falling, growing, understanding</small></div>
+          <div class="report-stat"><strong class="stat-number" data-target="1">0</strong><span class="stat-label">relationship arc</span><small>one continuous story across time</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tracklist" id="tracklist">
+      <div class="tracklist-inner">
+        <div class="tracklist-heading">
+          <span class="section-kicker">The soundtrack in four chapters</span>
+          <p>Ten songs, arranged as a relationship moves from first attraction into intimacy, uncertainty, strain, reflection, commitment, everyday maintenance, and shared time.</p>
+        </div>
+        <div class="act-switcher" role="tablist" aria-label="Choose a relationship chapter">
+          <button class="act-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All tracks</button>
+          <button class="act-tab" type="button" role="tab" aria-selected="false" data-filter="chapter-1">Discovering Love</button>
+          <button class="act-tab" type="button" role="tab" aria-selected="false" data-filter="chapter-2">Falling in Love</button>
+          <button class="act-tab" type="button" role="tab" aria-selected="false" data-filter="chapter-3">Uncertainty &amp; Growth</button>
+          <button class="act-tab" type="button" role="tab" aria-selected="false" data-filter="chapter-4">Understanding Love</button>
+        </div>
+        <div class="acts">
+          <article class="act-card reveal" data-act="chapter-1">
+            <span class="section-kicker">Chapter 1</span>
+            <h3>Discovering Love</h3>
+            <p class="act-description">Lightness, imagination, and the first recognition that romantic feeling has begun.</p>
+            <div class="cover-grid">
+              <a class="cover-link" href="#track-1"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/01-reality.jpg" alt="Album cover for track 01"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">01</span><span class="track-name">Reality</span><span class="track-artist">Richard Sanderson</span><span class="track-role">First attraction</span></a>
+              <a class="cover-link" href="#track-2"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/02-golden-hour.jpg" alt="Album cover for track 02"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">02</span><span class="track-name">Golden Hour</span><span class="track-artist">JVKE</span><span class="track-role">Idealization</span></a>
+            </div>
+          </article>
+          <article class="act-card breaking-card reveal" data-act="chapter-2">
+            <span class="section-kicker">Chapter 2</span>
+            <h3>Falling in Love</h3>
+            <p class="act-description">Growing intimacy, reachability, care, and the joy of being chosen.</p>
+            <div class="cover-grid">
+              <a class="cover-link" href="#track-3"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/03-always-online.jpg" alt="Album cover for track 03"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">03</span><span class="track-name">Always Online</span><span class="track-artist">JJ Lin</span><span class="track-role">Staying connected</span></a>
+              <a class="cover-link" href="#track-7"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/07-make-you-feel-my-love.jpg" alt="Album cover for track 07"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">07</span><span class="track-name">Make You Feel My Love</span><span class="track-artist">Adele</span><span class="track-role">Care in action</span></a>
+            </div>
+          </article>
+          <article class="act-card staying-card reveal" data-act="chapter-3">
+            <span class="section-kicker">Chapter 3</span>
+            <h3>Uncertainty &amp; Growth</h3>
+            <p class="act-description">Conflict, loss, reflection, and the work of becoming more realistic about love.</p>
+            <div class="cover-grid">
+              <a class="cover-link" href="#track-4"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/04-heartbeat.jpg" alt="Album cover for track 04"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">04</span><span class="track-name">Heartbeat</span><span class="track-artist">Leehom Wang</span><span class="track-role">Emotional conflict</span></a>
+              <a class="cover-link" href="#track-5"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/05-appearing-and-leaving.jpg" alt="Album cover for track 05"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">05</span><span class="track-name">Appearing and Leaving</span><span class="track-artist">Liang Bo</span><span class="track-role">Loss and uncertainty</span></a>
+              <a class="cover-link" href="#track-6-detail"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/06-the-answer.jpg" alt="Album cover for track 06"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">06</span><span class="track-name">The Answer</span><span class="track-artist">Yang Kun and Guo Caijie</span><span class="track-role">Reflection</span></a>
+            </div>
+          </article>
+          <article class="act-card understanding-card reveal" data-act="chapter-4">
+            <span class="section-kicker">Chapter 4</span>
+            <h3>Understanding Love</h3>
+            <p class="act-description">Commitment, maintenance, shared time, and the meaning of enduring companionship.</p>
+            <div class="cover-grid">
+              <a class="cover-link" href="#track-8"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/08-i-do.jpg" alt="Album cover for track 08"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">08</span><span class="track-name">I Do</span><span class="track-artist">Karen Mok</span><span class="track-role">Commitment</span></a>
+              <a class="cover-link" href="#track-9"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/09-slowly-falling.jpg" alt="Album cover for track 09"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">09</span><span class="track-name">Slowly Falling in Love with You</span><span class="track-artist">Karen Mok</span><span class="track-role">Everyday maintenance</span></a>
+              <a class="cover-link" href="#track-10"><span class="cover-art"><span class="vinyl-disc" aria-hidden="true"></span><img src="assets/covers/10-time-in-a-bottle.jpg" alt="Album cover for track 10"><span class="cover-glare" aria-hidden="true"></span></span><span class="track-number">10</span><span class="track-name">Time in a Bottle</span><span class="track-artist">Jim Croce</span><span class="track-role">Shared time</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="chapters-flow" id="chapters-flow">
+    <section class="act discovering" id="chapter-1" data-number="01"><div class="act-inner"><span class="section-kicker">Chapter 1</span><h2>Discovering Love</h2><p>Lightness, imagination, and the first recognition that romantic feeling has begun.</p></div></section>
+
+    <section class="track" id="track-1"><div class="track-inner"><div><div class="track-index">Track 01</div><h3>Reality</h3><div class="artist">Richard Sanderson</div><div class="stage">Life-course stage<strong>Adolescence · first romantic attraction</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>The first moment when romantic attention feels different from ordinary friendship.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Adolescent romantic initiation and the developmental role of crushes.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 14 explains that adolescence is a time when attachment begins to expand beyond family and friendship. Romantic relationships give young people a space to explore identity, learn social expectations, and practice new roles. “Reality” captures that shift through the feeling of a crush becoming emotionally real.</p></div><p class="track-copy">The title suggests a crush becoming emotionally real. This track begins the soundtrack before intimacy and commitment have fully formed.</p></div></div></section>
+
+    <section class="track" id="track-2"><div class="track-inner"><div><div class="track-index">Track 02</div><h3>Golden Hour</h3><div class="artist">JVKE</div><div class="stage">Life-course stage<strong>Early romantic love · idealization</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>The relationship feels luminous, extraordinary, and emotionally intense.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Romanticized beliefs versus growth beliefs.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 7 distinguishes romanticized beliefs from growth beliefs. “Golden Hour” stays close to the romanticized side of early love, when a new partner can make everything feel effortless and extraordinary. I use it here to show both the pleasure of idealization and the contrast that later relationships will create.</p></div><p class="track-copy">The title turns early love into a special period of light. It captures intensity while reminding us that this is a stage, not the permanent condition of a relationship.</p></div></div></section>
+
+    <section class="track" id="track-3"><div class="track-inner"><div><div class="track-index">Track 03</div><h3>Always Online</h3><div class="artist">JJ Lin</div><div class="stage">Life-course stage<strong>Emerging adulthood · long-distance connection</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Staying connected when physical proximity is limited.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Online relationship maintenance and technology-mediated intimacy.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 9 shows how technology can support relationship maintenance through self-disclosure, emotional support, positivity, and reassurance. It also points out that digital contact can create distraction and uncertainty. “Always Online” holds both ideas together because being reachable can feel like care, but presence still depends on how people communicate.</p></div><p class="track-copy">The title makes reachability a symbol of care. Being available becomes one way partners communicate presence across distance.</p></div></div></section>
+
+    <section class="act falling-in-love" id="chapter-2" data-number="02"><div class="act-inner"><span class="section-kicker">Chapter 2</span><h2>Falling in Love</h2><p>Growing intimacy, reachability, care, and the joy of being chosen.</p></div></section>
+
+    <section class="track" id="track-4"><div class="track-inner"><div><div class="track-index">Track 04</div><h3>Heartbeat</h3><div class="artist">Leehom Wang</div><div class="stage">Life-course stage<strong>Emerging adulthood · relationship strain</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Emotion remains strong while partners struggle to communicate and move forward.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Conflict escalation and negative affect reciprocity.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 17 describes how conflict can escalate when hurt is answered with more hurt. “Heartbeat” fits this moment because the relationship still carries strong emotion, but that intensity does not solve the problem. It shows why partners need communication, emotional regulation, and repair.</p></div><p class="track-copy">The title uses a bodily signal to suggest anxiety and uncertainty. Love does not prevent conflict; conflict reveals whether partners can respond constructively.</p></div></div></section>
+
+    <section class="track" id="track-5"><div class="track-inner"><div><div class="track-index">Track 05</div><h3>Appearing and Leaving</h3><div class="artist">Liang Bo</div><div class="stage">Life-course stage<strong>Emerging adulthood · relationship dissolution</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>A relationship ends, but attachment, memories, and routines do not disappear immediately.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Breakup experience and post-dissolution adjustment.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 19 presents breakup as a transition that can disrupt routines, roles, and imagined futures. “Appearing and Leaving” gives that transition a clear shape. Someone can leave the relationship while memories and habits remain, so recovery becomes a process of reflection and support.</p></div><p class="track-copy">The title emphasizes movement between presence and absence. It presents dissolution as a process rather than one final moment.</p></div></div></section>
+
+    <section class="interlude" id="track-6"><div class="eyebrow">Interlude · Track 06</div><h2>What is love?</h2><p><em>The Answer</em> · Yang Kun and Guo Caijie</p><p>After attraction, passion, conflict, and loss, the project turns from how love feels to what love requires.</p></section>
+
+    <section class="track" id="track-6-detail"><div class="track-inner"><div><div class="track-index">Track 06</div><h3>The Answer</h3><div class="artist">Yang Kun and Guo Caijie</div><div class="stage">Life-course stage<strong>Reflection · reconsidering romantic beliefs</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Reconsidering what love means after relational experience.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Growth beliefs and the intimacy, passion, and commitment framework.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 7 contrasts the belief that love should solve everything with the more realistic idea that relationships develop through effort. Lecture 11’s Triangular Theory of Love also separates intimacy, passion, and commitment. “The Answer” brings these ideas together by turning love into a question that has to be understood through experience.</p></div><p class="track-copy">The title becomes the project’s turning point. Love is no longer only an intensity; it becomes a question about growth, meaning, and responsibility.</p></div></div></section>
+
+    <section class="act uncertainty" id="chapter-3" data-number="03"><div class="act-inner"><span class="section-kicker">Chapter 3</span><h2>Uncertainty &amp; Growth</h2><p>Conflict, loss, reflection, and the work of becoming more realistic about love.</p></div></section>
+
+    <section class="track" id="track-7"><div class="track-inner"><div><div class="track-index">Track 07</div><h3>Make You Feel My Love</h3><div class="artist">Adele</div><div class="stage">Life-course stage<strong>Into adulthood · mature romantic love</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Love becomes visible through support, reassurance, and responsiveness.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Intimacy and relationship-enhancement maintenance.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 11 describes intimacy through warmth, understanding, trust, and support. Lecture 13 adds that relationships are maintained through positivity, openness, and reassurance. Adele’s “Make You Feel My Love” connects to both lectures because it presents care as something a partner actively communicates.</p></div><p class="track-copy">The title is organized around an action directed toward another person. Love is not only felt internally; it is communicated through dependable care.</p></div></div></section>
+
+    <section class="track" id="track-8"><div class="track-inner"><div><div class="track-index">Track 08</div><h3>I Do</h3><div class="artist">Karen Mok</div><div class="stage">Life-course stage<strong>Into adulthood · long-term partnership</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Choosing a shared future and making commitment explicit.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Long-term orientation and personal, structural, and moral commitment.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 12 describes commitment as a long term orientation and distinguishes personal commitment, structural commitment, and moral commitment. “I Do” focuses on the personal choice to build a future together, while its title also suggests the social ritual that makes that choice visible.</p></div><p class="track-copy">The title is a short statement and a decision. It represents commitment as an intentional transition, not merely proof that a relationship feels passionate.</p></div></div></section>
+
+    <section class="track" id="track-9"><div class="track-inner"><div><div class="track-index">Track 09</div><h3>Slowly Falling in Love with You</h3><div class="artist">Karen Mok</div><div class="stage">Life-course stage<strong>Established long-term relationship · everyday love</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Long-term love is renewed through ordinary routines and repeated care.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Relationship maintenance and companionate love.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 13 describes maintenance as the everyday work that keeps a relationship satisfying and helps repair it after strain. The song’s slow pace reflects that idea. Love is renewed through ordinary conversations, shared routines, openness, and small acts of reassurance.</p></div><p class="track-copy">The word “slowly” makes love cumulative. Long-term connection is built through ordinary days rather than only through dramatic declarations.</p></div></div></section>
+
+    <section class="track" id="track-10"><div class="track-inner"><div><div class="track-index">Track 10</div><h3>Time in a Bottle</h3><div class="artist">Jim Croce</div><div class="stage">Life-course stage<strong>Later adulthood · enduring companionship</strong></div></div><div class="course-box"><div class="course-row"><span class="course-label">Relationship theme</span><p>Shared time, mortality, memory, and emotionally meaningful companionship.</p></div><div class="course-row"><span class="course-label">Course concept</span><p>Socioemotional selectivity and relationships in late adulthood.</p></div><div class="course-row"><span class="course-label">Course connection</span><p>Lecture 14 connects later adulthood with changing priorities around time, health, caregiving, loss, and mortality. “Time in a Bottle” makes those ideas personal by treating shared time as precious. At this point in the soundtrack, love is expressed through the history two people have built together.</p></div><p class="track-copy">The title makes time feel finite. At the end of the soundtrack, love is measured less by intensity than by shared history and the value of the time two people have together.</p></div></div></section>
+    <section class="act understanding" id="chapter-4" data-number="04"><div class="act-inner"><span class="section-kicker">Chapter 4</span><h2>Understanding Love</h2><p>Commitment, maintenance, shared time, and the meaning of enduring companionship.</p></div></section>
+
+    </div>
+
+    <section class="finale"><div class="finale-inner"><span class="section-kicker">Final track · Final thought</span><h2>At first, love feels like a moment.</h2><p>Over time, it becomes a relationship, a choice, a practice, and shared history.</p><p>Across the life course, romantic love may shift from attraction and emotional intensity toward care, commitment, maintenance, and enduring companionship.</p><div class="finale-actions"><button class="primary-cta" type="button" id="replayReport">Replay the report <span>↑</span></button><button class="ghost-button" type="button" id="showArc">Reveal the arc</button><span class="mode-status" id="arcStatus" aria-live="polite"></span></div></div></section>
+
+    <section class="audio-credits" id="audio-credits"><div class="references-inner"><span class="section-kicker">Sound design</span><h2>Music credits</h2><p>The chapter background music comes from Scott Buckley’s Creative Commons Music Library. Each track is used as ambient website audio with looping, volume changes, and crossfades. No endorsement by the composer is implied.</p><ul class="music-credit-list"><li><a href="https://www.scottbuckley.com.au/library/felicity/" target="_blank" rel="noopener noreferrer"><em>Felicity</em></a> by Scott Buckley. Chapter 1: Discovering Love. Used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, with looping and web volume adjustments.</li><li><a href="https://www.scottbuckley.com.au/library/simplicity/" target="_blank" rel="noopener noreferrer"><em>Simplicity</em></a> by Scott Buckley. Chapter 2: Falling in Love. Used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, with looping and web volume adjustments.</li><li><a href="https://www.scottbuckley.com.au/library/a-kind-of-hope/" target="_blank" rel="noopener noreferrer"><em>A Kind Of Hope</em></a> by Scott Buckley. Chapter 3: Uncertainty &amp; Growth. Used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, with looping and web volume adjustments.</li><li><a href="https://www.scottbuckley.com.au/library/home-was-you/" target="_blank" rel="noopener noreferrer"><em>Home Was You</em></a> by Scott Buckley. Chapter 4: Understanding Love. Used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, with looping and web volume adjustments.</li></ul><p class="credit-note">Music © Scott Buckley. Changes made for this website: looping, volume adjustments, and crossfades. Attribution format: “Title” by Scott Buckley, released under CC BY 4.0, <a href="https://www.scottbuckley.com.au/" target="_blank" rel="noopener noreferrer">www.scottbuckley.com.au</a>. The ten playlist songs are linked for listening only. Their commercial recordings are not hosted or embedded in this website.</p></div></section>
+
+    <section class="references" id="references"><div class="references-inner"><h2>Course materials referenced</h2><ul><li>Lecture 5: Attraction and Mate Selection</li><li>Lecture 7: Social Cognition Bias</li><li>Lecture 9: Relationships in the Modern World Technology</li><li>Lecture 11: Love and Satisfaction</li><li>Lecture 12: Theories of Commitment</li><li>Lecture 13: Relationship Maintenance</li><li>Lecture 14: Social Context: Understanding Relationship Diversity</li><li>Lecture 17: Conflict</li><li>Lecture 19: Relationship Dissolution</li></ul></div></section>
+  </main>
+  <footer class="footer"><span>HDFS 225 · Close Relationships</span><span>Love, Over Time · 10 tracks</span></footer>
+  <script>
+    const progressBar = document.getElementById('progressBar');
+    const hero = document.querySelector('.hero');
+    const heroFigure = document.querySelector('.hero-figure');
+    if (hero && heroFigure && window.matchMedia('(pointer: fine)').matches) {
+      hero.addEventListener('pointermove', (event) => {
+        const bounds = hero.getBoundingClientRect();
+        const x = ((event.clientX - bounds.left) / bounds.width - .5) * 16;
+        const y = ((event.clientY - bounds.top) / bounds.height - .5) * 10;
+        heroFigure.style.setProperty('--figure-x', `${x.toFixed(1)}px`);
+        heroFigure.style.setProperty('--figure-y', `${y.toFixed(1)}px`);
+      }, { passive: true });
+      hero.addEventListener('pointerleave', () => {
+        heroFigure.style.setProperty('--figure-x', '0px');
+        heroFigure.style.setProperty('--figure-y', '0px');
+      }, { passive: true });
+    }
+    function updateProgress() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    const scrollToSection = (id) => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const soundDock = document.getElementById('soundDock');
+    const soundToggle = document.getElementById('soundToggle');
+    const soundStatus = document.getElementById('soundStatus');
+    const soundChapter = document.getElementById('soundChapter');
+
+    class AmbientSoundscape {
+      constructor() {
+        this.chapter = 'chapter-1';
+        this.activeChapter = null;
+        this.playing = false;
+        this.players = {};
+        this.fadeFrame = null;
+        this.context = null;
+        this.master = null;
+        this.chapterInfo = {
+          'chapter-1': { label: 'Discovering Love · first light', audio: 'assets/audio/chapter-01-felicity.mp3' },
+          'chapter-2': { label: 'Falling in Love · open connection', audio: 'assets/audio/chapter-02-simplicity.mp3' },
+          'chapter-3': { label: 'Uncertainty & Growth · reflective space', audio: 'assets/audio/chapter-03-a-kind-of-hope.mp3' },
+          'chapter-4': { label: 'Understanding Love · warm return', audio: 'assets/audio/chapter-04-home-was-you.mp3' }
+        };
+        this.syncUI();
+      }
+
+      syncUI() {
+        if (soundDock) soundDock.classList.toggle('is-playing', this.playing);
+        if (soundToggle) {
+          soundToggle.setAttribute('aria-pressed', String(this.playing));
+          soundToggle.setAttribute('aria-label', this.playing ? 'Pause ambient sound' : 'Turn sound on');
+        }
+        if (soundStatus) soundStatus.textContent = this.playing ? 'Sound on' : 'Sound off';
+        if (soundChapter) soundChapter.textContent = this.chapterInfo[this.chapter]?.label || 'Ambient soundscape';
+        if (hero) hero.classList.toggle('is-journey-started', this.playing);
+        document.body.classList.toggle('sound-is-playing', this.playing);
+        document.querySelectorAll('.track-visual').forEach((visual) => visual.classList.toggle('is-paused', !this.playing));
+      }
+
+      async init() {
+        if (!Object.keys(this.players).length) {
+          Object.entries(this.chapterInfo).forEach(([key, info]) => {
+            const player = new Audio(info.audio);
+            player.loop = true;
+            player.preload = 'auto';
+            player.volume = 0;
+            player.addEventListener('error', () => {
+              if (soundStatus) soundStatus.textContent = 'Audio file unavailable';
+            });
+            this.players[key] = player;
+          });
+        }
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext && !this.context) {
+          this.context = new AudioContext();
+          this.master = this.context.createGain();
+          this.master.gain.value = .16;
+          this.master.connect(this.context.destination);
+        }
+        if (this.context && this.context.state === 'suspended') await this.context.resume();
+        return Object.keys(this.players).length === Object.keys(this.chapterInfo).length;
+      }
+
+      fadeTo(chapter, duration = 2600) {
+        const next = this.players[chapter];
+        if (!next) return;
+        const previous = this.activeChapter ? this.players[this.activeChapter] : null;
+        if (previous === next) return;
+        if (this.fadeFrame) cancelAnimationFrame(this.fadeFrame);
+        next.play().catch(() => {
+          if (soundStatus) soundStatus.textContent = 'Click Sound on to start';
+        });
+        const previousLevel = previous ? previous.volume : 0;
+        const nextLevel = .34;
+        const started = performance.now();
+        this.activeChapter = chapter;
+        const tick = (now) => {
+          const progress = Math.min((now - started) / duration, 1);
+          const eased = progress * progress * (3 - 2 * progress);
+          if (previous) previous.volume = previousLevel * (1 - eased);
+          next.volume = nextLevel * eased;
+          if (progress < 1) this.fadeFrame = requestAnimationFrame(tick);
+          else {
+            this.fadeFrame = null;
+            if (previous) { previous.pause(); previous.volume = 0; }
+          }
+        };
+        this.fadeFrame = requestAnimationFrame(tick);
+      }
+
+      playPageTurn() {
+        if (!this.context || !this.master) return;
+        const now = this.context.currentTime;
+        const duration = .48;
+        const source = this.context.createBufferSource();
+        const buffer = this.context.createBuffer(1, Math.floor(this.context.sampleRate * duration), this.context.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let index = 0; index < data.length; index += 1) data[index] = (Math.random() * 2 - 1) * (1 - index / data.length);
+        source.buffer = buffer;
+        const filter = this.context.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1150;
+        filter.Q.value = .6;
+        const gain = this.context.createGain();
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(.018, now + .04);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + duration);
+        source.connect(filter).connect(gain).connect(this.master);
+        source.start(now);
+        source.stop(now + duration);
+      }
+
+      setChapter(chapter) {
+        if (!this.chapterInfo[chapter]) return;
+        const changed = this.chapter !== chapter;
+        this.chapter = chapter;
+        this.syncUI();
+        if (changed && this.playing) {
+          this.fadeTo(chapter);
+          this.playPageTurn();
+        }
+      }
+
+      async start() {
+        if (this.playing) return;
+        const ready = await this.init();
+        if (!ready) return;
+        this.playing = true;
+        this.syncUI();
+        this.fadeTo(this.chapter, 1800);
+        this.playPageTurn();
+      }
+
+      async pause() {
+        if (!this.playing) return;
+        this.playing = false;
+        if (this.fadeFrame) cancelAnimationFrame(this.fadeFrame);
+        this.fadeFrame = null;
+        Object.values(this.players).forEach((player) => { player.pause(); player.volume = 0; });
+        this.activeChapter = null;
+        this.syncUI();
+        if (this.context && this.context.state === 'running') await this.context.suspend();
+      }
+
+      async toggle() {
+        if (this.playing) await this.pause();
+        else await this.start();
+      }
+    }
+
+    const soundscape = new AmbientSoundscape();
+    soundToggle?.addEventListener('click', () => soundscape.toggle());
+    document.getElementById('startReport')?.addEventListener('click', () => {
+      document.getElementById('startReport').setAttribute('aria-expanded', 'true');
+      soundscape.start();
+      window.dispatchEvent(new CustomEvent('start-visual-prologue'));
+    });
+    document.getElementById('continueReport')?.addEventListener('click', () => scrollToSection('tracklist'));
+    document.getElementById('replayReport')?.addEventListener('click', () => {
+      soundscape.start();
+      history.replaceState(null, '', '#top');
+      scrollToSection('top');
+    });
+
+    const openingSequence = document.getElementById('openingSequence');
+    if (openingSequence) {
+      const openingNumber = document.getElementById('openingNumber');
+      const openingTitle = document.getElementById('openingTitle');
+      const openingDescription = document.getElementById('openingDescription');
+      const openingCue = document.getElementById('openingCue');
+      const openingStageImage = document.getElementById('openingStageImage');
+      const openingFigure = openingSequence.querySelector('.opening-figure');
+      const openingTimeline = [...openingSequence.querySelectorAll('.opening-timeline span')];
+      const openingSkip = document.getElementById('openingSkip');
+      const openingContinue = document.getElementById('openingContinue');
+      const openingBlockedSections = [...document.querySelectorAll('header, main, footer')];
+      const openingStages = [
+        { title: 'Curiosity', description: 'Two people meet, pause, and feel the first flutter of a connection neither expected.', cue: 'Sometimes a relationship begins with one glance.', image: 'assets/opening/01-curiosity.png', alt: 'Curiosity: two people notice each other for the first time on a garden path' },
+        { title: 'Falling', description: 'Attraction becomes a shared rhythm: light, closeness, and possibility.', cue: 'The world starts to glow around two people.', image: 'assets/opening/02-falling.png', alt: 'Falling: two young people walk together through a flower-filled garden' },
+        { title: 'Conflict', description: 'Love meets friction. Distance, uncertainty, and disagreement disturb the path.', cue: 'Closeness does not make difficulty disappear.', image: 'assets/opening/03-conflict.png', alt: 'Conflict: a couple stands apart in the rain on a city bridge' },
+        { title: 'Insights', description: 'After loss, she learns that love is not only intensity; it is attention and choice.', cue: 'A new understanding changes the direction.', image: 'assets/opening/04-insights.png', alt: 'Insights: a woman reflects on a hill while her partner gives her space' },
+        { title: 'Commitment', description: 'Two lives choose a shared future, turning feeling into a promise and a practice.', cue: 'Love becomes something both people build.', image: 'assets/opening/05-commitment.png', alt: 'Commitment: a couple exchanges rings beneath a flower arch' },
+        { title: 'Shared Time', description: 'Across a life, love becomes care, memory, and companionship — held in ordinary days.', cue: 'The journey does not end; it becomes a history.', image: 'assets/opening/06-shared-time.png', alt: 'Shared time: an older couple share tea on a porch at sunset' }
+      ];
+      let openingIndex = 0;
+      let openingInterval = null;
+      let openingFinishTimer = null;
+      let openingImageTimer = null;
+      let openingStarted = false;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const showOpeningStage = (index) => {
+        openingIndex = index;
+        const stage = openingStages[index];
+        openingSequence.dataset.stage = String(index);
+        if (openingNumber) openingNumber.textContent = `${String(index + 1).padStart(2, '0')} · ${String(openingStages.length).padStart(2, '0')}`;
+        if (openingTitle) openingTitle.textContent = stage.title;
+        if (openingDescription) openingDescription.textContent = stage.description;
+        if (openingCue) openingCue.textContent = stage.cue;
+        if (openingStageImage && openingStageImage.getAttribute('src') !== stage.image) {
+          if (openingImageTimer) window.clearTimeout(openingImageTimer);
+          openingStageImage.classList.add('is-changing');
+          openingImageTimer = window.setTimeout(() => {
+            openingStageImage.src = stage.image;
+            openingStageImage.alt = stage.alt;
+            openingStageImage.classList.remove('is-changing');
+          }, 190);
+        }
+        openingTimeline.forEach((item, itemIndex) => {
+          item.classList.toggle('is-current', itemIndex === index);
+          item.classList.toggle('is-past', itemIndex < index);
+          item.setAttribute('aria-selected', itemIndex === index ? 'true' : 'false');
+        });
+      };
+
+      const finishOpening = () => {
+        if (!openingStarted) return;
+        if (openingInterval) window.clearInterval(openingInterval);
+        if (openingFinishTimer) window.clearTimeout(openingFinishTimer);
+        openingSequence.classList.add('is-closing');
+        openingSequence.setAttribute('aria-hidden', 'true');
+        window.setTimeout(() => {
+          openingSequence.hidden = true;
+          openingStarted = false;
+          document.documentElement.classList.remove('opening-active', 'journey-locked');
+          document.documentElement.classList.add('journey-open');
+          openingBlockedSections.forEach((section) => { section.inert = false; });
+          scrollToSection('report-overview');
+          window.setTimeout(() => document.getElementById('continueReport')?.focus({ preventScroll: true }), 80);
+        }, 850);
+      };
+
+      const startOpening = () => {
+        if (openingStarted) return;
+        openingStarted = true;
+        showOpeningStage(0);
+        openingSequence.hidden = false;
+        openingSequence.classList.remove('is-closing');
+        openingSequence.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('opening-active');
+        openingBlockedSections.forEach((section) => { section.inert = true; });
+        if (openingContinue) openingContinue.style.display = 'none';
+        if (reducedMotion) {
+          if (openingContinue) openingContinue.style.display = 'inline-flex';
+        } else {
+          openingInterval = window.setInterval(() => {
+            if (openingIndex < openingStages.length - 1) {
+              showOpeningStage(openingIndex + 1);
+            } else {
+              if (openingInterval) window.clearInterval(openingInterval);
+              if (openingContinue) openingContinue.style.display = 'inline-flex';
+              openingFinishTimer = window.setTimeout(finishOpening, 3600);
+            }
+          }, 2200);
+        }
+      };
+
+      const resetPrism = () => {
+        openingFigure?.style.setProperty('--tilt-x', '0deg');
+        openingFigure?.style.setProperty('--tilt-y', '0deg');
+        openingFigure?.style.setProperty('--parallax-x', '0px');
+        openingFigure?.style.setProperty('--parallax-y', '0px');
+      };
+      if (openingFigure && window.matchMedia('(pointer: fine)').matches && !reducedMotion) {
+        openingFigure.addEventListener('pointermove', (event) => {
+          const bounds = openingFigure.getBoundingClientRect();
+          const x = ((event.clientX - bounds.left) / bounds.width - .5);
+          const y = ((event.clientY - bounds.top) / bounds.height - .5);
+          openingFigure.style.setProperty('--tilt-x', `${(x * 11).toFixed(2)}deg`);
+          openingFigure.style.setProperty('--tilt-y', `${(-y * 9).toFixed(2)}deg`);
+          openingFigure.style.setProperty('--parallax-x', `${(x * 12).toFixed(1)}px`);
+          openingFigure.style.setProperty('--parallax-y', `${(y * 8).toFixed(1)}px`);
+        }, { passive: true });
+        openingFigure.addEventListener('pointerleave', resetPrism, { passive: true });
+      }
+      window.addEventListener('start-visual-prologue', startOpening);
+      openingSkip?.addEventListener('click', finishOpening);
+      openingContinue?.addEventListener('click', finishOpening);
+      openingTimeline.forEach((item, itemIndex) => {
+        const chooseStage = () => {
+          if (openingInterval) window.clearInterval(openingInterval);
+          openingInterval = null;
+          showOpeningStage(itemIndex);
+          if (itemIndex === openingStages.length - 1 && openingContinue) openingContinue.style.display = 'inline-flex';
+        };
+        item.addEventListener('click', chooseStage);
+        item.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            chooseStage();
+          }
+        });
+      });
+      openingSequence.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') finishOpening();
+      });
+    }
+
+    const trackCovers = {
+      'track-1': 'assets/covers/01-reality.jpg',
+      'track-2': 'assets/covers/02-golden-hour.jpg',
+      'track-3': 'assets/covers/03-always-online.jpg',
+      'track-4': 'assets/covers/04-heartbeat.jpg',
+      'track-5': 'assets/covers/05-appearing-and-leaving.jpg',
+      'track-6-detail': 'assets/covers/06-the-answer.jpg',
+      'track-7': 'assets/covers/07-make-you-feel-my-love.jpg',
+      'track-8': 'assets/covers/08-i-do.jpg',
+      'track-9': 'assets/covers/09-slowly-falling.jpg',
+      'track-10': 'assets/covers/10-time-in-a-bottle.jpg'
+    };
+    const trackAccents = {
+      'track-1': '#c66e4e',
+      'track-2': '#d99d5d',
+      'track-3': '#718b79',
+      'track-4': '#8c5d5d',
+      'track-5': '#263248',
+      'track-6-detail': '#b29470',
+      'track-7': '#c66e4e',
+      'track-8': '#9a8060',
+      'track-9': '#718b79',
+      'track-10': '#8d7152'
+    };
+    const trackLinks = {
+      'track-1': 'https://www.youtube.com/results?search_query=Richard+Sanderson+Reality+official+video',
+      'track-2': 'https://www.youtube.com/watch?v=PEM0Vs8jf1w',
+      'track-3': 'https://www.youtube.com/watch?v=-gqfAzw6FQo',
+      'track-4': 'https://www.youtube.com/watch?v=1YUV6jweYHE',
+      'track-5': 'https://www.youtube.com/watch?v=jJKNi5ULSds',
+      'track-6-detail': 'https://www.youtube.com/watch?v=xkFscjJyRu8',
+      'track-7': 'https://www.youtube.com/watch?v=QVeubNxaBsg',
+      'track-8': 'https://www.youtube.com/watch?v=PVN_xegCbFE',
+      'track-9': 'https://www.youtube.com/watch?v=HWVZYwFkhPM',
+      'track-10': 'https://www.youtube.com/watch?v=gnrSpwb2Ax4'
+    };
+    document.querySelectorAll('.track[id]').forEach((track) => {
+      const cover = trackCovers[track.id];
+      if (!cover) return;
+      if (trackAccents[track.id]) track.style.setProperty('--track-accent', trackAccents[track.id]);
+      const metaColumn = track.querySelector('.track-inner > div');
+      if (metaColumn) metaColumn.classList.add('track-meta');
+      if (metaColumn && !metaColumn.querySelector('.track-visual')) {
+        const visual = document.createElement('div');
+        visual.className = 'track-visual';
+        visual.setAttribute('aria-label', 'Album cover with rotating vinyl record');
+        visual.innerHTML = `<span class="track-vinyl" aria-hidden="true"></span><img src="${cover}" alt="Album cover"><span aria-hidden="true"></span>`;
+        metaColumn.prepend(visual);
+      }
+      const listenUrl = trackLinks[track.id];
+      if (metaColumn && listenUrl && !metaColumn.querySelector('.listen-card')) {
+        const title = track.querySelector('h3')?.textContent.trim() || 'this track';
+        const artist = track.querySelector('.artist')?.textContent.trim() || 'the artist';
+        const listenCard = document.createElement('a');
+        listenCard.className = 'listen-card';
+        listenCard.href = listenUrl;
+        listenCard.target = '_blank';
+        listenCard.rel = 'noopener noreferrer';
+        listenCard.setAttribute('aria-label', `Listen to ${title} by ${artist} on YouTube`);
+        listenCard.innerHTML = '<span class="listen-disc" aria-hidden="true"></span><span class="listen-copy"><strong>Listen to the track</strong><small>Open the song on YouTube</small></span><span class="listen-arrow" aria-hidden="true">↗</span>';
+        metaColumn.appendChild(listenCard);
+      }
+    });
+
+    const trackNarratives = {
+      'track-1': {
+        about: 'The first rush of romantic attention: a meeting that feels unreal, private, and more vivid than ordinary friendship. In its film context, the song sits with adolescent first love and the dream of being noticed.',
+        why: 'I chose it as the opening because its dream-and-reality tension captures the threshold between imagining love and experiencing it. The soundtrack begins with possibility rather than commitment.',
+        content: 'Adolescent romantic initiation; first attraction; and the shift from peer friendship toward romantic possibility.',
+        connection: 'Lecture 14 explains that adolescence is a time when attachment begins to expand beyond family and friendship. Romantic relationships give young people a space to explore identity, learn social expectations, and practice new roles. “Reality” captures that shift through the feeling of a crush becoming emotionally real.'
+      },
+      'track-2': {
+        about: 'A love-struck portrait of time seeming to slow around someone who makes the world feel luminous. Its images turn attraction into an almost cinematic, idealized atmosphere.',
+        why: 'I placed it after “Reality” because it intensifies the first spark into idealization. It shows both the pleasure of early passion and the tendency to make a new relationship feel more perfect than it has yet proven.',
+        content: 'Romanticized beliefs; idealization; early passion; and positive bias toward a new partner.',
+        connection: 'Lecture 7 distinguishes romanticized beliefs from growth beliefs. “Golden Hour” stays close to the romanticized side of early love, when a new partner can make everything feel effortless and extraordinary. I use it here to show both the pleasure of idealization and the contrast that later relationships will create.'
+      },
+      'track-3': {
+        about: 'A relationship experienced through messages, notifications, and the promise of being reachable. Online presence becomes a form of emotional proximity, while the screen also reveals how fragile mediated connection can be.',
+        why: 'I chose it to move the arc from attraction to maintenance: once people care about each other, staying available becomes a daily relationship practice. It also updates the life-course story for contemporary intimacy.',
+        content: 'Technology-mediated intimacy; online self-disclosure; and relationship maintenance across distance and digital contact.',
+        connection: 'Lecture 9 shows how technology can support relationship maintenance through self-disclosure, emotional support, positivity, and reassurance. It also points out that digital contact can create distraction and uncertainty. “Always Online” holds both ideas together because being reachable can feel like care, but presence still depends on how people communicate.'
+      },
+      'track-4': {
+        about: 'A love song shaped by the physical and emotional aftershock of a relationship that is not fully resolved. The heartbeat becomes a sign of attachment, regret, and the difficulty of moving on.',
+        why: 'I chose it as the first strain in the arc because it shows that strong feeling does not automatically create good communication. The song keeps intimacy and pain in the same frame.',
+        content: 'Conflict and negative affect reciprocity; attachment under strain; and emotional ambivalence.',
+        connection: 'Lecture 17 describes how conflict can escalate when hurt is answered with more hurt. “Heartbeat” fits this moment because the relationship still carries strong emotion, but that intensity does not solve the problem. It shows why partners need communication, emotional regulation, and repair.'
+      },
+      'track-5': {
+        about: 'A breakup narrative built around presence becoming absence: someone enters a life, becomes familiar, and then leaves while memory continues to occupy the space.',
+        why: 'I chose it because the life-course arc needs a real rupture, not only romantic progress. Its title captures dissolution as movement and repetition rather than a clean ending.',
+        content: 'Relationship dissolution; post-breakup adjustment; grief; rumination; support; and meaning-making.',
+        connection: 'Lecture 19 presents breakup as a transition that can disrupt routines, roles, and imagined futures. “Appearing and Leaving” gives that transition a clear shape. Someone can leave the relationship while memories and habits remain, so recovery becomes a process of reflection and support.'
+      },
+      'track-6-detail': {
+        about: 'A playful but uncertain duet that asks what love is and whether another person can provide an answer. The two voices make love sound like a question negotiated between different perspectives.',
+        why: 'I chose it as the hinge between rupture and growth. After attraction and loss, the soundtrack stops treating love as self-evident and asks what people learn through experience.',
+        content: 'Romantic beliefs and growth beliefs; intimacy, passion, and commitment; and meaning-making after relationship experience.',
+        connection: 'Lecture 7 contrasts the belief that love should solve everything with the more realistic idea that relationships develop through effort. Lecture 11’s Triangular Theory of Love also separates intimacy, passion, and commitment. “The Answer” brings these ideas together by turning love into a question that has to be understood through experience.'
+      },
+      'track-7': {
+        about: 'A promise of steady support in difficult conditions. Love is expressed not as a private feeling but as an intention to show up, protect, and remain emotionally available.',
+        why: 'I chose Adele’s recording because its restrained delivery makes care feel deliberate rather than flashy. In the arc, this is where affection becomes observable behavior.',
+        content: 'Intimacy through warmth, trust, understanding, and support; plus maintenance through reassurance and responsiveness.',
+        connection: 'Lecture 11 describes intimacy through warmth, understanding, trust, and support. Lecture 13 adds that relationships are maintained through positivity, openness, and reassurance. Adele’s “Make You Feel My Love” connects to both lectures because it presents care as something a partner actively communicates.'
+      },
+      'track-8': {
+        about: 'A warm declaration that turns love into a spoken decision. The song treats commitment as choosing a shared future, not merely feeling certain in the present.',
+        why: 'I chose it to mark the moment when the relationship becomes explicit. Its title is short and decisive, giving the arc a clear threshold between desire and commitment.',
+        content: 'Long-term orientation; personal, structural, and moral commitment; and the transition into partnership.',
+        connection: 'Lecture 12 describes commitment as a long term orientation and distinguishes personal commitment, structural commitment, and moral commitment. “I Do” focuses on the personal choice to build a future together, while its title also suggests the social ritual that makes that choice visible.'
+      },
+      'track-9': {
+        about: 'A gentle portrait of affection growing through ordinary conversations, shared routines, and the gradual accumulation of familiarity. Love is presented as something that deepens slowly rather than arrives all at once.',
+        why: 'I chose it to correct the idea that long-term love must remain dramatic. It makes maintenance visible: repeated attention can renew intimacy without a crisis or grand gesture.',
+        content: 'Relationship maintenance; companionate love; shared tasks; joint leisure; openness; and reassurance.',
+        connection: 'Lecture 13 describes maintenance as the everyday work that keeps a relationship satisfying and helps repair it after strain. The song’s slow pace reflects that idea. Love is renewed through ordinary conversations, shared routines, openness, and small acts of reassurance.'
+      },
+      'track-10': {
+        about: 'A meditation on the limits of time and the wish to preserve meaningful moments with loved ones. The song’s central image makes companionship precious because time cannot be stored or extended indefinitely.',
+        why: 'I chose it as the final track because it changes the scale of the story. After attraction, conflict, and commitment, love is measured by shared history and the value of time together. Its origin in Jim Croce’s anticipation of fatherhood also deepens its connection to family time and mortality.',
+        content: 'Later-life perspective; socioemotional selectivity; shared time; caregiving; mortality; and enduring companionship.',
+        connection: 'Lecture 14 connects later adulthood with changing priorities around time, health, caregiving, loss, and mortality. “Time in a Bottle” makes those ideas personal by treating shared time as precious. At this point in the soundtrack, love is expressed through the history two people have built together.'
+      }
+    };
+
+    const courseNoteRows = [
+      ['What this song is about', 'about'],
+      ['Why I chose it', 'why'],
+      ['Course content', 'content'],
+      ['Course connection', 'connection']
+    ];
+    document.querySelectorAll('.track[id]').forEach((track) => {
+      const narrative = trackNarratives[track.id];
+      const box = track.querySelector('.course-box');
+      if (!narrative || !box) return;
+      const letterId = `${track.id}-course-letter`;
+      const envelope = document.createElement('div');
+      envelope.className = 'course-envelope';
+      const trigger = document.createElement('button');
+      trigger.className = 'envelope-trigger';
+      trigger.type = 'button';
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.setAttribute('aria-controls', letterId);
+      trigger.innerHTML = '<span class="envelope-icon" aria-hidden="true"></span><span class="envelope-copy"><strong>Open the relationship note</strong><small>Read the song meaning and its course connection.</small></span><span class="envelope-arrow" aria-hidden="true">↗</span>';
+      const letter = document.createElement('div');
+      letter.className = 'course-letter';
+      letter.id = letterId;
+      letter.hidden = true;
+      courseNoteRows.forEach(([label, key]) => {
+        const row = document.createElement('div');
+        row.className = 'course-row';
+        const heading = document.createElement('span');
+        heading.className = 'course-label';
+        heading.textContent = label;
+        const paragraph = document.createElement('p');
+        paragraph.textContent = narrative[key];
+        row.append(heading, paragraph);
+        letter.appendChild(row);
+      });
+      trigger.addEventListener('click', () => {
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        letter.hidden = isOpen;
+        box.classList.toggle('is-open', !isOpen);
+        trigger.querySelector('strong').textContent = isOpen ? 'Open the relationship note' : 'Fold the relationship note';
+      });
+      envelope.append(trigger, letter);
+      box.replaceChildren(envelope);
+    });
+
+    document.querySelectorAll('.track-visual').forEach((visual) => {
+      if (window.matchMedia('(pointer: fine)').matches) {
+        visual.addEventListener('pointermove', (event) => {
+          const bounds = visual.getBoundingClientRect();
+          const x = ((event.clientX - bounds.left) / bounds.width - .5) * 7;
+          const y = ((event.clientY - bounds.top) / bounds.height - .5) * -7;
+          visual.style.setProperty('--tilt-x', `${x.toFixed(2)}deg`);
+          visual.style.setProperty('--tilt-y', `${y.toFixed(2)}deg`);
+        }, { passive: true });
+        visual.addEventListener('pointerleave', () => {
+          visual.style.setProperty('--tilt-x', '0deg');
+          visual.style.setProperty('--tilt-y', '0deg');
+        }, { passive: true });
+      }
+    });
+    soundscape.syncUI();
+
+    const chapterPlan = {
+      'chapter-1': ['track-1', 'track-2'],
+      'chapter-2': ['track-3', 'track-7'],
+      'chapter-3': ['track-4', 'track-5', 'track-6', 'track-6-detail'],
+      'chapter-4': ['track-8', 'track-9', 'track-10']
+    };
+    const chaptersFlow = document.getElementById('chapters-flow');
+    if (chaptersFlow) {
+      Object.entries(chapterPlan).forEach(([chapterId, trackIds]) => {
+        const chapter = document.getElementById(chapterId);
+        if (chapter) chaptersFlow.appendChild(chapter);
+        trackIds.forEach((trackId) => {
+          const track = document.getElementById(trackId);
+          if (track) chaptersFlow.appendChild(track);
+        });
+      });
+    }
+
+    const revealTargets = document.querySelectorAll('.report-overview, .tracklist-heading, .act-switcher, .act-card, .intro-grid, .timeline-wrap, .act, .track, .interlude, .finale, .audio-credits, .references');
+    revealTargets.forEach((element) => element.classList.add('reveal'));
+
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealTargets.forEach((element) => revealObserver.observe(element));
+
+      const trackObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => entry.target.classList.toggle('is-active', entry.isIntersecting));
+      }, { threshold: 0.42 });
+      document.querySelectorAll('.track').forEach((track) => trackObserver.observe(track));
+
+      const chapterObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) soundscape.setChapter(entry.target.id);
+        });
+      }, { threshold: 0.55 });
+      document.querySelectorAll('.act').forEach((chapter) => chapterObserver.observe(chapter));
+
+      const stats = document.querySelectorAll('.stat-number');
+      let statsAnimated = false;
+      const statObserver = new IntersectionObserver((entries) => {
+        if (statsAnimated || !entries.some((entry) => entry.isIntersecting)) return;
+        statsAnimated = true;
+        stats.forEach((stat) => {
+          const target = Number(stat.dataset.target || 0);
+          const started = performance.now();
+          const duration = 900;
+          const tick = (now) => {
+            const progress = Math.min((now - started) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            stat.textContent = String(Math.round(target * eased));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        });
+        statObserver.disconnect();
+      }, { threshold: 0.45 });
+      const overview = document.getElementById('report-overview');
+      if (overview) statObserver.observe(overview);
+    } else {
+      revealTargets.forEach((element) => element.classList.add('is-visible'));
+      document.querySelectorAll('.stat-number').forEach((stat) => { stat.textContent = stat.dataset.target; });
+    }
+
+    const actTabs = document.querySelectorAll('.act-tab');
+    const actCards = document.querySelectorAll('.act-card');
+    const modeStatus = document.getElementById('modeStatus');
+    actTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.dataset.filter;
+        actTabs.forEach((item) => {
+          const selected = item === tab;
+          item.classList.toggle('is-active', selected);
+          item.setAttribute('aria-selected', String(selected));
+        });
+        actCards.forEach((card) => {
+          const show = filter === 'all' || card.dataset.act === filter;
+          card.classList.toggle('is-dimmed', !show);
+          card.classList.toggle('is-focus', show && filter !== 'all');
+        });
+        if (modeStatus) modeStatus.textContent = filter === 'all' ? 'All chapters selected' : `${tab.textContent.trim()} chapter selected`;
+        if (filter !== 'all') soundscape.setChapter(filter);
+      });
+    });
+
+    document.getElementById('showArc')?.addEventListener('click', (event) => {
+      const status = document.getElementById('arcStatus');
+      if (status) status.textContent = 'Discovering Love → Falling in Love → Uncertainty & Growth → Understanding Love';
+      event.currentTarget.textContent = 'Arc revealed';
+      event.currentTarget.disabled = true;
+    });
+  </script>
+</body>
+</html>
